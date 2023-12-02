@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title type="text">JOON</title>
+    <subtitle type="html">人总是善忘的，总有一些事情值得记录，等自己老了，回过头看看自己这一生走过的路。</subtitle>
+    <updated>2023-12-02T18:54:25&#43;08:00</updated>
+    <id>https://cloud-Xolt.github.io/</id>
+    <link rel="alternate" type="text/html" href="https://cloud-Xolt.github.io/" />
+    <link rel="self" type="application/atom&#43;xml" href="https://cloud-Xolt.github.io/atom.xml" />
+    <author>
+            <name>JOON</name>
+            <uri>https://cloud-Xolt.github.io/</uri>
+            
+                <email>wo2g9cai@gmail.com</email>
+            </author>
+    
+    <generator uri="https://gohugo.io/" version="0.120.0">Hugo</generator>
+        <entry>
+            <title type="text">Joon</title>
+            <link rel="alternate" type="text/html" href="https://cloud-Xolt.github.io/about/me/" />
+            <id>https://cloud-Xolt.github.io/about/me/</id>
+            <updated>2023-12-02T18:53:30&#43;08:00</updated>
+            <published>2023-12-02T13:36:08&#43;08:00</published>
+            <author>
+                    <name>JOON</name>
+                    <uri>https://cloud-Xolt.github.io/</uri>
+                    <email>wo2g9cai@gmail.com</email>
+                    </author>
+            <summary type="html">绿盟科技集团股份有限公司-创新研究院-云安全研究员 方鸿兴院士-方班演武堂-企业导师 专……</summary>
+            
+                <content type="html">&lt;p&gt;绿盟科技集团股份有限公司-创新研究院-云安全研究员&lt;/br&gt;
+方鸿兴院士-方班演武堂-企业导师&lt;/p&gt;
+&lt;h4 id=&#34;专业领域&#34;&gt;专业领域&lt;/h4&gt;
+&lt;p&gt;云原生攻防技术研究&lt;/br&gt;
+云原生安全创新技术研究与产品孵化&lt;/p&gt;
+&lt;h4 id=&#34;研究成果&#34;&gt;研究成果&lt;/h4&gt;
+&lt;p&gt;多行业顶级企业云原生安全体系建设方案&lt;/br&gt;
+多部金融和通信行业标准&lt;/br&gt;
+多项安全技术专利&lt;/br&gt;
+多部云原生安全白皮书&lt;/p&gt;
+&lt;h4 id=&#34;博客宗旨&#34;&gt;博客宗旨&lt;/h4&gt;
+&lt;p&gt;人总是善忘的，总有一些事情值得记录，当自己白发苍苍、步履蹒跚，回过头看看这一生走过的路。&lt;/p&gt;
+</content>
+            
+            
+            
+            
+            
+                
+                    
+                
+                    
+                
+            
+        </entry>
+    
+</feed>

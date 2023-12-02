@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+
+
+
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>JOON</title>
+        <link>https://cloud-Xolt.github.io/</link>
+        <description>人总是善忘的，总有一些事情值得记录，等自己老了，回过头看看自己这一生走过的路。</description>
+        <generator>Hugo 0.120.0 https://gohugo.io/</generator>
+        
+            <language>zh-CN</language>
+        
+        
+            <managingEditor>wo2g9cai@gmail.com (JOON)</managingEditor>
+        
+        
+            <webMaster>wo2g9cai@gmail.com (JOON)</webMaster>
+        
+        
+        <lastBuildDate>Sat, 02 Dec 2023 18:54:25 &#43;0800</lastBuildDate>
+        
+            <atom:link rel="self" type="application/rss&#43;xml" href="https://cloud-Xolt.github.io/rss.xml" />
+        
+        
+            <item>
+                <title>Joon</title>
+                <link>https://cloud-Xolt.github.io/about/me/</link>
+                <guid isPermaLink="true">https://cloud-Xolt.github.io/about/me/</guid>
+                <pubDate>Sat, 02 Dec 2023 13:36:08 &#43;0800</pubDate>
+                
+                    <author>wo2g9cai@gmail.com (JOON)</author>
+                
+                
+                
+                    <description>&lt;p&gt;绿盟科技集团股份有限公司-创新研究院-云安全研究员&lt;/br&gt;
+方鸿兴院士-方班演武堂-企业导师&lt;/p&gt;
+&lt;h4 id=&#34;专业领域&#34;&gt;专业领域&lt;/h4&gt;
+&lt;p&gt;云原生攻防技术研究&lt;/br&gt;
+云原生安全创新技术研究与产品孵化&lt;/p&gt;
+&lt;h4 id=&#34;研究成果&#34;&gt;研究成果&lt;/h4&gt;
+&lt;p&gt;多行业顶级企业云原生安全体系建设方案&lt;/br&gt;
+多部金融和通信行业标准&lt;/br&gt;
+多项安全技术专利&lt;/br&gt;
+多部云原生安全白皮书&lt;/p&gt;
+&lt;h4 id=&#34;博客宗旨&#34;&gt;博客宗旨&lt;/h4&gt;
+&lt;p&gt;人总是善忘的，总有一些事情值得记录，当自己白发苍苍、步履蹒跚，回过头看看这一生走过的路。&lt;/p&gt;
+</description>
+                
+                
+                
+                
+                
+                    
+                        
+                    
+                        
+                    
+                
+            </item>
+        
+    </channel>
+</rss>
