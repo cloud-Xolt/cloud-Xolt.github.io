@@ -21,33 +21,339 @@
             <webMaster>wo2g9cai@gmail.com (JOON)</webMaster>
         
         
-        <lastBuildDate>Mon, 04 Dec 2023 11:30:19 &#43;0800</lastBuildDate>
+        <lastBuildDate>Mon, 04 Dec 2023 13:15:45 &#43;0800</lastBuildDate>
         
             <atom:link rel="self" type="application/rss&#43;xml" href="https://cloud-Xolt.github.io/rss.xml" />
         
         
             <item>
-                <title>Joon</title>
-                <link>https://cloud-Xolt.github.io/about/me/</link>
-                <guid isPermaLink="true">https://cloud-Xolt.github.io/about/me/</guid>
-                <pubDate>Sat, 02 Dec 2023 13:36:08 &#43;0800</pubDate>
+                <title>Kubernetes集群的攻与防</title>
+                <link>https://cloud-Xolt.github.io/posts/k8s-security/</link>
+                <guid isPermaLink="true">https://cloud-Xolt.github.io/posts/k8s-security/</guid>
+                <pubDate>Mon, 04 Dec 2023 11:22:22 &#43;0800</pubDate>
                 
                     <author>wo2g9cai@gmail.com (JOON)</author>
                 
                 
                 
-                    <description>&lt;p&gt;绿盟科技集团股份有限公司-创新研究院-云安全研究员&lt;/br&gt;
-方鸿兴院士-方班演武堂-企业导师&lt;/p&gt;
-&lt;h4 id=&#34;专业领域&#34;&gt;专业领域&lt;/h4&gt;
-&lt;p&gt;云原生攻防技术研究&lt;/br&gt;
-云原生安全创新技术研究与产品孵化&lt;/p&gt;
-&lt;h4 id=&#34;研究成果&#34;&gt;研究成果&lt;/h4&gt;
-&lt;p&gt;多行业顶级企业云原生安全体系建设方案&lt;/br&gt;
-多部金融和通信行业标准&lt;/br&gt;
-多项安全技术专利&lt;/br&gt;
-多部云原生安全白皮书&lt;/p&gt;
-&lt;h4 id=&#34;博客宗旨&#34;&gt;博客宗旨&lt;/h4&gt;
-&lt;p&gt;人总是善忘的，总有一些事情值得记录，当自己白发苍苍、步履蹒跚，回过头看看这一生走过的路。&lt;/p&gt;
+                    <description>&lt;blockquote&gt;
+&lt;p&gt;专题 云原生 标签 Kubernetes集群安全&lt;/br&gt;
+首发于&lt;a href=&#34;https://mp.weixin.qq.com/s/L2AOMJW7s9bYocE_e0K9kg&#34;&gt;创新研究院官方博客&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在2022年RSA大会上，来自CyberArk的高级安全研究员 Eviatar
+Gerzi为我们分享了Kubernetes集群的攻击面和防御策略以及如何利用两款开源工具（Kubesploit和KubiScan）对集群环境进行攻击和防御。本文试图以Gerzi的思路为依据，从攻击和防御的角度来简单聊一聊Kubernetes集群安全。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;简介&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!-- --&gt;
+&lt;ol&gt;
+&lt;li&gt;Kubernetes简介&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Kubernetes是一个可移植、可扩展的开源平台，用于管理容器化工作负载和服务&lt;sup&gt;[&lt;/sup&gt;[1]&lt;sup&gt;]&lt;/sup&gt;。据stackshare的报道显示，已经有超过3000家公司在使用Kubernetes，其中不乏知名的头部企业&lt;sup&gt;[&lt;/sup&gt;[2]&lt;sup&gt;]&lt;/sup&gt;，毫无疑问Kubernetes是最受欢迎的容器管理平台之一。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;Kubesploit简介&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Kubesploit是一款针对容器化环境的模拟真实攻击的跨平台开源工具，旨在为
+PT 团队和红队人员在容器化环境攻击期间提供帮助。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;架构说明&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;该工具基于merlin项目并集成yaegi项目实现。Merlin具有良好的C&amp;amp;C
+和代理基础设施，满足了图1-1中的Center到Agent的架构需求，而其多样化的代理流量加密技术则保证了代码远程投送的安全性。Yaegi则是一个go语音解释器，用于解决远程投递的go语言代码在Agent端执行问题。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image1.png&#34;
+style=&#34;width:2.81096in;height:1.25278in&#34;
+alt=&#34;C:\Users\zhangxiaoyong\AppData\Local\Microsoft\Windows\INetCache\Content.MSO\38C90A16.tmp&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;图1-1 远程代码执行示意图&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;功能场景介绍&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;截止目前，如图1-2，Kubesploit 项目已公布支持功能场景有15个[3]。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image2.png&#34;
+style=&#34;width:2.26042in;height:2.48496in&#34;
+alt=&#34;C:\Users\zhangxiaoyong\AppData\Local\Microsoft\Windows\INetCache\Content.MSO\AFC30A98.tmp&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;图1-2 Kubesploit 攻击模块&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;KubiScan简介&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;KubiScan是一款基于角色访问控制 (RBAC) 授权模型的Kubernetes
+集群扫描工具。该工具旨在自动化收集有关风险角色\集群角色、角色绑定\集群绑定、用户和
+pod
+的信息，帮助集群管理员识别攻击者可能利用来破坏集群的权限，降低集群风险[4]。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image3.png&#34;
+style=&#34;width:3.79471in;height:1.9106in&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;图1-3 KubiScan功能特性&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;该工具支持以下两种方式运行：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;在集群主机上以容器方式运行&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在主节点或者远程主机上使用python3运行&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;由于KubiScan某些功能需要特权服务账号，可以使用kube/config或者使用相应权限的服务账号令牌来解决。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Kubernetes集群安全&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;根据IDC预测，国内市场到2025年容器基础架构软件的市场规模将达10亿美元，容器市场规模的增长，必将面临容器管理的难题，而Kubernetes是个不错的选择。
+Kubernetes集群安全也将面临更严峻的考验，只要有一个Kubernetes自身或者其他容器架构的一个可利用途径被证实也必将对市场安全带来较大的影响。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image4.png&#34;
+style=&#34;width:4.48075in;height:3.56259in&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;图2-1 中国软件市场预测&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;站在攻击的角度看Kubernetes集群安全&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;从攻击链路来（见图2-2）&lt;sup&gt;[&lt;/sup&gt;[5]&lt;sup&gt;]&lt;/sup&gt;讲，集群安全可以分为两部分去看：一是集群组件，二是集群中运行的程序。这并不意味着集群组件和运行程序是相互独立的，相反，任何一方面的可利用点，都将是攻击者获取全部资源的有利抓手。如果攻击者通过前期手段控制了一个运行业务的容器，那么攻击者就可以通过该容器逃逸到容器所在的节点。如果控制了某个node节点，就可以控制该节点的上的pod，或者利用cve漏洞间接获取主节点权限。如果攻击者通过内部提权或者外部接口控制了主节点权限，那集群的几乎所有信息将会被轻易获取和接管。另外需要补充的是如etcd类的组件也需要关注，一旦控制了etcd，便可以间接获取整个集群。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image5.png&#34;
+style=&#34;width:5.06389in;height:3.27708in&#34;
+alt=&#34;C:\Users\zhangxiaoyong\Documents\WXWork\1688851816357974\Cache\Image\2022-04\企业微信截图_16494012018812.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;图2-2云原生攻击链路&lt;/p&gt;
+&lt;p&gt;从威胁矩阵来看，我们不妨沿用微软发布的Kubernetes威胁矩阵&lt;sup&gt;[&lt;/sup&gt;[6]&lt;sup&gt;]&lt;/sup&gt;（如图2-3），对Kubernetes集群的攻击主要有10种手段：初始访问、执行、持久化、权限提升、防御绕过、凭证获取、资源发现、横向移动、数据收集、施加影响。这是微软更新的第二个矩阵版本，该矩阵调整了
+MITRE ATT&amp;amp;CK®
+框架的结构，几乎成为了描述面向集群的安全威胁的行业标准。随着
+Kubernetes
+的发展，一些已知的威胁被修复，故这部分矩阵上的技术被淘汰，新技术的应用也引入了新的威胁，这些威胁被加入了新版本的威胁矩阵。接下来我们就具体的矩阵策略聊一聊集群攻击。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image6.png&#34;
+style=&#34;width:5.38569in;height:3.31078in&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;图2-3 Kubernetes攻击矩阵&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;初始访问&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;该攻击方式下攻击者主要通过一些攻击技术来获取集群资源的访问权限，包括直接通过集群管理层获取或者间接通过集群内的承载业务对访问权限进行获取。如通过泄露的云账号信息、镜像仓库投毒等方式注入恶意镜像、泄露的Kubeconfig文件、易攻击的应用程序、暴露的敏感接口等。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;执行&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;攻击者主要采用各种手段去达到能在集群内执行命令的效果。如果你已经拥有exec执行权限，那么你可以轻易的执行命令去渗透到容器内，达到后门、提权等一系列的目的。主要手段如：创建新的容器或注入者边车容器、利用代码执行漏洞的应用程序、远程ssh访问容器等。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;持久化&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;当攻击者拿下一定的集群权限后，对权限做固化是一个必须的选项。这时候可以利用Kubernetes
+控制器在集群中运长期运行后门容器或者定时执行定时任务，在容器内建立持久性，如果有权限挂载hostPath，那么也可以对节点主机持久化。 另一个新思路是通过准入控制器webhook，拦截请求获取口令信息，达到目的，相比于侵入式的方式，这个方式似乎更加一劳永逸，但也要考虑口令的变动，在具体场景中组合使用可能会更加合适。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;权限提升&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;攻击过程中获取的权限和资源往往是有限的，这个时候，利用现有资源获取更多权限是下一步必须需要实施的。如通过特权容器可以获取到主机上的大部分资源。除此之外，通过RBAC（角色访问控制）创建或者绑定高权限的角色、通过宿主机挂载逃逸到节点主机等也是攻击者进行权限提升的常见手段。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;防御绕过&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;该攻击方式主要指攻击者通过一些技术去隐藏其攻击动作从而避免被检测到。我们不妨从检测的几个维度去思考，常见的检测一般基于：日志（包括系统和应用）、事件（大部分是平台如Kubernetes事件）、资源名称（容器、pod、服务等）、资源基线（如镜像基线等），那么对这些检测数据的源头进行清除和伪装将是很好的防御绕过手段。另外对攻击者自身行为和身份的隐藏也是对溯源的一个有效的绕过。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;凭证获取&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;该攻击方式主要包含通过一系列技术手段获取服务应用凭证。例如大部分的服务凭证将会被保存到Secret中，这时候在同域（如pod，namespace）下的应用将有权使用这些信息。如果能够直接取得节点管理权限，直接列出这些凭证也不是没有可能。值得注意的是，即使没有直接的节点管理权限，如果RBAC没有配置，那么以应用程序身份也可以直接通过API从Kubernetes获取凭证信息。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;资源发现&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;当攻击者进入集群，首先需要搞清楚的是：这个集群都有些啥，然后才能继续开展后续的攻击活动。这里最直接的方式是访问各种API/Web界面获取，如Kubernetes
+API/Web UI、Kubelet API、元数据
+API等。实际的环境中，该攻击方式往往还需要进一步的网络监控手段，如通过网络探测发现其他应用程序的资源，进而扫描其中包含的漏洞等。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;横向移动&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;当发现了可用资源（如容器、pod、节点等）后，攻击者需要进一步对其他资源进行侦查，以掌握不同资源的给定可用权限，并利用已有权限渗透到这些资源，进行进一步的攻击。对资源进行侦察和渗透的大致思路包含了从边缘间接资源侦查（如云内的场景下通过hostPath挂载，利用单个容器访问权限获取到集群外云资源等）、集群资源的侦查（如通过凭证获取阶段RBAC策略未配置或配置不合理的场景获取资源，利用SA权限获得集群资源）、对主机资源的侦查（如创建可写的hostPath挂载容器）、DNS投毒（修改CoreDNS，获取其他服务的真实网络身份）、ARP/IP欺骗等。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;数据收集&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;该攻击手段是21年微软矩阵版本中新增的，目前主要包含利用既有权限，从私有仓库拉取镜像。笔者推测该攻击手段是用于持久化，或用于在其他横向移动等攻击手段中新建容器，或用于镜像投毒等（需要考虑仓库的准入等机制）。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;施加影响&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;该攻击手段主要是集群中的资源和活动，如数据破坏(包含集群组件和应用程序)、资源劫持（指利用集群资源进行其他任务活动，如挖矿等）。拒绝服务（通过恶意的资源占用如网络，使得正常活动无法运行或者运行受损）等技术。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;站在防御的角度看Kubernetes集群安全&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;笔者始终认为专业的事交给专业的产品，Kubernetes集群防御主要还是应该依托防御安全产品（如绿盟的云原生安全平台），所以我们今天从环境加固方面去聊一聊安全防御。Gerzi在会议中分享了针对集群防御的最佳加固实践&lt;sup&gt;[&lt;/sup&gt;[7]&lt;sup&gt;]&lt;/sup&gt;，如图2-4所示，加固策略几乎覆盖了大部分攻击手段。接下来我们简要聊一聊加固策略的大致内容。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image7.png&#34;
+style=&#34;width:5.14756in;height:2.55085in&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;图2-4 集群加固的最佳实践&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Kubernetes集群安全配置&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;笔者理解该策略首先包含对Kubernetes
+API的访问控制。除此之外，使用RBAC和命名空间限制对集群资源的访问、使用网络策略限制集群内部流量（如pod间流量）、使用TLS进行组件间通信和etcd加密，以及合理的限制集群上资源的使用（包括pod级自身资源限制、文件挂载的只读等限制等）都会在一定程度上减少由于集群本身因素的攻击。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;遵循安全策略&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;传统的一些安全设计理念和安全策略在云安全中依然有效。由于漏洞被暴出后，厂商往往会第一时间对其进行规避和修复，故保持组件最新状态是应对已知漏洞攻击的最简单有效的方式。此外，遵循最小化原则，使用最小的系统资源与权限、为集群service配置最小IAM权限角色也能有效缩小威胁面。最后，使用私有IP防止集群资产暴露到互联网、配置审计日志记录访问踪迹(如Kubernetes
+API
+审计、流式传输日志和审核&lt;a href=&#34;https://kubernetes.io/blog/2021/10/05/nsa-cisa-kubernetes-hardening-guidance/#streaming-logs-and-auditing&#34;&gt; &lt;/a&gt;）、确保组件应用或执行文件以及镜像的安全性等加固策略，也是保证集群环境安全的有效措施。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;微服务自身安全&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;这是一个相对发散的安全面，由于集群业务各不相同，微服务提供的功能接口千变万化，这里我们只讨论以集群配置的手段去削弱微服务侧带给整个集群的影响。主要的加固策略包括：设置pod安全策略使得pod间强制隔离、将集群敏感信息最小挂载、配置低可信度的容器到指定的强制隔离节点运行、使用服务网格加密通信等。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;使用Kubesploit对Kubernetes集群进行模拟攻击&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Kubesploit也遵从Kubernetes威胁矩阵并建立了其功能特性对威胁矩阵的映射，由图2-5可知，虽然单个攻击方式的手段覆盖率不是很高，但基本上90%的攻击方式已经得到覆盖。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image8.png&#34;
+style=&#34;width:3.92708in;height:3.16441in&#34; alt=&#34;mitre_pic_full.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;图2-5 Kubesploit MITRE地图&lt;/p&gt;
+&lt;p&gt;会议上，Gerzi就如何使用Kubesploit对Kubernetes集群进行攻击进行了演示，Kubesploit的项目说明里也有一个动态图片说明了一个完整的模拟攻击过程。演示环境中，其Agent安装在docker容器内，从agent安装到向server（center）注册，仅需要几秒钟就可以建立链接。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image9.gif&#34;
+style=&#34;width:3.11834in;height:1.61914in&#34; alt=&#34;kubesploit&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;图2-6 Kubesploit 攻击示例&lt;/p&gt;
+&lt;p&gt;Server端对成功注册的Agent具有完全的管理能力，可以在Server上选择对应的攻击向量在指定的Agent上执行，并将结果和过程日志回显到server端，这对红蓝对抗活动里苦于缺少容器环境攻击工具的小伙伴来说无疑是个很好的消息。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image10.png&#34;
+style=&#34;width:3.21039in;height:2.28662in&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;图2-7 Kubesploit 攻击信息回显&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;使用KubiScan对Kubernetes集群进行扫描&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;KubiScan大家可能并不
+陌生，因为Gerzi在2020年的rsac上就分享这款款开源工具。该工具主要根据风险管理配置文件risky_roles.yaml对风险角色的优先级进行维护，从而识别有风险RBAC配置。&lt;/p&gt;
+&lt;p&gt;执行KubiScan并携带指定的功能参数，工具就会自动对环境集群配置进行扫描，并将有风险的配置进行展示，根据扫描结果显示的风险详情，安全管理员可以针对特定的配置进行加固配置，以达到防御效果。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image11.png&#34;
+style=&#34;width:3.40032in;height:1.52085in&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;图2-8 KubiScan扫描信息展示&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;总结&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Gerzi通过两款开源工具演示了对Kubernetes集群的攻击和防御思路，本文特意从集群的攻击面和加固知识点进行的简单的解读，由于涉及安全技术面太过宽泛，笔者无法在文中深入介绍，只能抛出来作为一个引子，希望能让我们对集群安全的轮廓有个大致了解。除此之外，笔者还想说的是Kubesploit工具。据Gerzi讲述他们开发该工具是希望通过真实性的攻击去检测集群环境是否安全，以及安全防御软件是否生效。但从笔者了解到的信息来看，仅目前的Kubesploit工具来讲，则更像是一个Kubernetes集群攻击套件向BAS演变的中间能力。笔者认为该工具最终会集合这两款工具的能力（扫描发现+真实模拟攻击），向着通过智能化+场景编排化的手段，去验证集群环境和安全防御能力的方向发展。&lt;/p&gt;
+&lt;h1 id=&#34;参考文献&#34;&gt;参考文献&lt;/h1&gt;
+&lt;p&gt;[1] &lt;sup&gt;[]&lt;/sup&gt; &lt;a href=&#34;https://kubernetes.io/docs/concepts/overview/&#34;&gt;https://kubernetes.io/docs/concepts/overview/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[2] &lt;sup&gt;[]&lt;/sup&gt; &lt;a href=&#34;https://stackshare.io/kubernetes&#34;&gt;https://stackshare.io/kubernetes&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[3] &lt;a href=&#34;https://github.com/cyberark/kubesploit&#34;&gt;https://github.com/cyberark/kubesploit&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[4] &lt;a href=&#34;https://github.com/cyberark/KubiScan&#34;&gt;https://github.com/cyberark/KubiScan&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[5] &lt;sup&gt;[]&lt;/sup&gt; 云原生背景下的应用安全建设&lt;/p&gt;
+&lt;p&gt;[6] &lt;sup&gt;[]&lt;/sup&gt;
+&lt;a href=&#34;https://www.microsoft.com/security/blog/2021/03/23/secure-containerized-environments-with-updated-threat-matrix-for-kubernetes/&#34;&gt;https://www.microsoft.com/security/blog/2021/03/23/secure-containerized-environments-with-updated-threat-matrix-for-kubernetes/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[7] &lt;sup&gt;[]&lt;/sup&gt; Attacking and Defending Kubernetes Cluster:
+Kubesploit vs KubiScan&lt;/p&gt;
+</description>
+                
+                
+                
+                
+                
+                    
+                        
+                    
+                        
+                    
+                
+            </item>
+        
+            <item>
+                <title>K8S中的一种双栈应急方案</title>
+                <link>https://cloud-Xolt.github.io/posts/2-ip-in-k8s/</link>
+                <guid isPermaLink="true">https://cloud-Xolt.github.io/posts/2-ip-in-k8s/</guid>
+                <pubDate>Sat, 02 Dec 2023 17:21:24 &#43;0800</pubDate>
+                
+                    <author>wo2g9cai@gmail.com (JOON)</author>
+                
+                
+                
+                    <description>&lt;h2 id=&#34;背景&#34;&gt;背景：&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;现有业务实现在K8S架构下未实现IPV6通信；售前项目需要支持业务的IPV6通信，要求以少量时间满足需求；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;容器云宿主机有多张网卡，但外部组件服务（以下简称组件A）只能监听eth0;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;解决方案&#34;&gt;解决方案：&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;容器云宿主机、外部服务器配置IPV4+IPV6双栈&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;容器间服务使用内部clusterip（ipv4）通信&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;针对容器内需要访问外部IPV6的场景，开启hostnetwork共享主机网络&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;服务A监听某IPV4ip&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;宿主机配置haproxy4层代理， 转发IPV6到IPV4&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;span class=&#34;mark&#34;&gt;备注：
+此方案仅适用于少量容器有外部IPV6通信需求&lt;/span&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;服务交互&#34;&gt;服务交互：&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image1.png&#34;
+style=&#34;width:5.45972in;height:4.87471in&#34; /&gt;&lt;/p&gt;
+&lt;h2 id=&#34;配置过程&#34;&gt;配置过程:&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;配置宿主机双栈；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;nmcli connection modify eth0 +ipv6.addresses 2001:250:4000:2000::22/64&lt;/p&gt;
+&lt;p&gt;service network restart&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;配置haproxy&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image2.png&#34;
+style=&#34;width:5.51458in;height:4.58681in&#34; /&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;重启haproxy服务：service haproxy restart&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;使用IPV6访问检查是否成功，此处不再赘述；&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;配置需要访问外部IPV6组件的容器共享主机网络：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;kubectl edit deployment xxxx -n xxxxx&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在spec下containers同级添加以下信息:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image3.png&#34;
+style=&#34;width:5.54583in;height:0.60347in&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;退出设置后旧的容器会自动销毁，新的配置会在新容器里生效，待容器READY后进入容器查看容器网络是否已经共享了宿主机的网络;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image4.png&#34;
+style=&#34;width:5.43056in;height:4.22153in&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;在容器内ping以下外部组件的IPV6进行测试，&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image5.png&#34;
+style=&#34;width:5.43056in;height:0.97222in&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;由此可见docker内是可以访问外部组件了。&lt;/p&gt;
+&lt;h2 id=&#34;说在最后&#34;&gt;说在最后：&lt;/h2&gt;
+&lt;p&gt;此方案只能当做应急方案，真正需要做到IPV6支持的话，还是建议升级K8S到支持IPV6的版本，然后选用calico配置ipv6网络池进行之间分配；&lt;/p&gt;
 </description>
                 
                 
