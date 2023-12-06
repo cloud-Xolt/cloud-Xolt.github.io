@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#">
+    <meta charset="UTF-8" />
+
+    <meta name="generator" content="Hugo 0.120.0"><meta name="theme-color" content="#fff" />
+    <meta name="color-scheme" content="light dark">
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
+    
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <title>基于零信任构建云原生安全底座 | JOON</title>
+
+    <link rel="stylesheet" href="/css/meme.min.985acea6dc6d7aae30cac83f51e0408b0e4ebce1f290c57165d41808d098189b.css"/>
+
+    
+    
+        
+            <script src="/js/meme.min.e46abe484398824efc70edec3126437916974df592d7c395b44f8f60e0f57e9d.js"></script>
+
+        
+    
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB&#43;Garamond:ital,wght@0,400;0,500;0,700;1,400;1,700&amp;family=Noto&#43;Serif&#43;SC:wght@400;500;700&amp;family=Source&#43;Code&#43;Pro:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" media="print" onload="this.media='all'" />
+        <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB&#43;Garamond:ital,wght@0,400;0,500;0,700;1,400;1,700&amp;family=Noto&#43;Serif&#43;SC:wght@400;500;700&amp;family=Source&#43;Code&#43;Pro:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" /></noscript>
+
+    <meta name="author" content="JOON" /><meta name="description" content="专题 2023RSAC创新沙盒 标签 0day 零信任 K8S 首发于创新研究院官方博客 在2023年RSA……" />
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#2a6df4" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="JOON" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="JOON" />
+    <meta name="msapplication-starturl" content="../../" />
+    <meta name="msapplication-TileColor" content="#fff" />
+    <meta name="msapplication-TileImage" content="../../icons/mstile-150x150.png" />
+    <link rel="manifest" href="/manifest.json" />
+
+    
+    
+
+    
+        <link rel="canonical" href="https://cloud-Xolt.github.io/posts/rsac-zerotrust/" />
+    
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "datePublished": "2023-12-06T18:10:14+08:00",
+        "dateModified": "2023-12-06T18:19:48+08:00",
+        "url": "https://cloud-Xolt.github.io/posts/rsac-zerotrust/",
+        "headline": "基于零信任构建云原生安全底座",
+        "description": "专题 2023RSAC创新沙盒 标签 0day 零信任 K8S 首发于创新研究院官方博客 在2023年RSA……",
+        "inLanguage" : "zh-CN",
+        "articleSection": "posts",
+        "wordCount":  4329 ,
+        "image": ["https://cloud-Xolt.github.io/images/media/image1.png","https://cloud-Xolt.github.io/images/media/image2.png","https://cloud-Xolt.github.io/images/media/image3.png","https://cloud-Xolt.github.io/images/media/image4.png","https://cloud-Xolt.github.io/images/media/image5.png","https://cloud-Xolt.github.io/images/media/image6.png","https://cloud-Xolt.github.io/images/media/image7.png","https://cloud-Xolt.github.io/images/media/image8.png","https://cloud-Xolt.github.io/images/media/image9.png"],
+        "author": {
+            "@type": "Person",
+            "description": "Nothing...",
+            "email": "wo2g9cai@gmail.com",
+            "url": "https://cloud-Xolt.github.io/",
+            "name": "JOON"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "JOON",
+            "url": "https://cloud-Xolt.github.io/"
+        },
+        "mainEntityOfPage": {
+            "@type": "WebSite",
+            "@id": "https://cloud-Xolt.github.io/"
+        }
+    }
+</script>
+
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+
+
+<meta name="twitter:creator" content="@xxxx" />
+
+    
+
+
+
+<meta property="og:title" content="基于零信任构建云原生安全底座" />
+<meta property="og:description" content="专题 2023RSAC创新沙盒 标签 0day 零信任 K8S 首发于创新研究院官方博客 在2023年RSA……" />
+<meta property="og:url" content="https://cloud-Xolt.github.io/posts/rsac-zerotrust/" />
+<meta property="og:site_name" content="JOON" />
+<meta property="og:locale" content="zh" /><meta property="og:image" content="https://cloud-Xolt.github.io/images/media/image1.png" />
+<meta property="og:type" content="article" />
+    <meta property="article:published_time" content="2023-12-06T18:10:14&#43;08:00" />
+    <meta property="article:modified_time" content="2023-12-06T18:19:48&#43;08:00" />
+    
+    <meta property="article:section" content="posts" />
+
+
+
+
+    
+    
+
+    
+</head>
+
+    <body>
+        <div class="container">
+            
+    <header class="header">
+        
+            <div class="header-wrapper">
+                <div class="header-inner single">
+                    
+    <div class="site-brand">
+        
+            <a href="/" class="brand">JOON</a>
+        
+    </div>
+
+                    <nav class="nav">
+    <ul class="menu" id="menu">
+        
+            
+        
+        
+        
+        
+            
+                <li class="menu-item active"><a href="/posts/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon archive"><path d="M32 448c0 17.7 14.3 32 32 32h384c17.7 0 32-14.3 32-32V160H32v288zm160-212c0-6.6 5.4-12 12-12h104c6.6 0 12 5.4 12 12v8c0 6.6-5.4 12-12 12H204c-6.6 0-12-5.4-12-12v-8zM480 32H32C14.3 32 0 46.3 0 64v48c0 8.8 7.2 16 16 16h480c8.8 0 16-7.2 16-16V64c0-17.7-14.3-32-32-32z"/></svg><span class="menu-item-name">文章摘要</span></a>
+                </li>
+            
+        
+            
+                <li class="menu-item"><a href="/tags/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="icon tags"><path d="M497.941 225.941L286.059 14.059A48 48 0 0 0 252.118 0H48C21.49 0 0 21.49 0 48v204.118a48 48 0 0 0 14.059 33.941l211.882 211.882c18.744 18.745 49.136 18.746 67.882 0l204.118-204.118c18.745-18.745 18.745-49.137 0-67.882zM112 160c-26.51 0-48-21.49-48-48s21.49-48 48-48 48 21.49 48 48-21.49 48-48 48zm513.941 133.823L421.823 497.941c-18.745 18.745-49.137 18.745-67.882 0l-.36-.36L527.64 323.522c16.999-16.999 26.36-39.6 26.36-63.64s-9.362-46.641-26.36-63.64L331.397 0h48.721a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882z"/></svg><span class="menu-item-name">生活瞬间</span></a>
+                </li>
+            
+        
+            
+                <li class="menu-item"><a href="/about/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" class="icon user-circle"><path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 96c48.6 0 88 39.4 88 88s-39.4 88-88 88-88-39.4-88-88 39.4-88 88-88zm0 344c-58.7 0-111.3-26.6-146.5-68.2 18.8-35.4 55.6-59.8 98.5-59.8 2.4 0 4.8.4 7.1 1.1 13 4.2 26.6 6.9 40.9 6.9 14.3 0 28-2.7 40.9-6.9 2.3-.7 4.7-1.1 7.1-1.1 42.9 0 79.7 24.4 98.5 59.8C359.3 421.4 306.7 448 248 448z"/></svg><span class="menu-item-name">关于我</span></a>
+                </li>
+            
+        
+            
+                
+                    
+                    
+                        <li class="menu-item">
+                            <a id="theme-switcher" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon theme-icon-light"><path d="M193.2 104.5l48.8-97.5a18 18 0 0128 0l48.8 97.5 103.4 -34.5a18 18 0 0119.8 19.8l-34.5 103.4l97.5 48.8a18 18 0 010 28l-97.5 48.8 34.5 103.4a18 18 0 01-19.8 19.8l-103.4-34.5-48.8 97.5a18 18 0 01-28 0l-48.8-97.5l-103.4 34.5a18 18 0 01-19.8-19.8l34.5-103.4-97.5-48.8a18 18 0 010-28l97.5-48.8-34.5-103.4a18 18 0 0119.8-19.8zM256 128a128 128 0 10.01 0M256 160a96 96 0 10.01 0"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon theme-icon-dark"><path d="M27 412a256 256 0 10154-407a11.5 11.5 0 00-5 20a201.5 201.5 0 01-134 374a11.5 11.5 0 00-15 13"/></svg></a>
+                        </li>
+                    
+                
+            
+        
+    </ul>
+</nav>
+
+                    
+                </div>
+            </div>
+            
+    <input type="checkbox" id="nav-toggle" aria-hidden="true" />
+    <label for="nav-toggle" class="nav-toggle"></label>
+    <label for="nav-toggle" class="nav-curtain"></label>
+
+
+        
+    </header>
+
+
+
+
+            
+            
+    <main class="main single" id="main">
+    <div class="main-inner">
+
+        
+
+        <article class="content post h-entry" data-align="justify" data-type="posts" data-toc-num="true">
+
+            <h1 class="post-title p-name">基于零信任构建云原生安全底座</h1>
+
+            
+
+            
+                
+            
+
+            
+                
+
+<div class="post-meta">
+    
+        
+        <time datetime="2023-12-06T18:10:14&#43;08:00" class="post-meta-item published dt-published"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;2023.12.6</time>
+    
+    
+        
+        <time datetime="2023-12-06T18:19:48&#43;08:00" class="post-meta-item modified dt-updated"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M400 64h-48V12c0-6.627-5.373-12-12-12h-40c-6.627 0-12 5.373-12 12v52H160V12c0-6.627-5.373-12-12-12h-40c-6.627 0-12 5.373-12 12v52H48C21.49 64 0 85.49 0 112v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm-6 400H54a6 6 0 0 1-6-6V160h352v298a6 6 0 0 1-6 6zm-52.849-200.65L198.842 404.519c-4.705 4.667-12.303 4.637-16.971-.068l-75.091-75.699c-4.667-4.705-4.637-12.303.068-16.971l22.719-22.536c4.705-4.667 12.303-4.637 16.97.069l44.104 44.461 111.072-110.181c4.705-4.667 12.303-4.637 16.971.068l22.536 22.718c4.667 4.705 4.636 12.303-.069 16.97z"/></svg>&nbsp;2023.12.6</time>
+    
+    
+    
+        
+        
+        
+            
+        
+    
+    
+        
+        <span class="post-meta-item wordcount"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;4329</span>
+    
+    
+        
+        <span class="post-meta-item reading-time"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;9&nbsp;分钟</span>
+    
+    
+    
+</div>
+
+            
+
+            <div class="post-body e-content">
+                <blockquote>
+<p>专题 2023RSAC创新沙盒 标签 0day 零信任 K8S</br>
+首发于<a href="https://mp.weixin.qq.com/s/fkBQR5wAUqCrMCQOLxPmDQ" target="_blank" rel="noopener">创新研究院官方博客</a></p>
+</blockquote>
+<p>在2023年RSA大会上，来自SUSE NeuVector的高级安全工程师Tracy
+Walker为我们分享了一种在K8S环境中阻止0Day攻击的透明(对业务和环境无影响)方法——零信任原则，并且使用开源工具NeuVector进行了演示。本文基于Tracy的零信任观点结合SUSE的整体方案，尝试挖掘出更多的安全新思路。</p>
+<ol>
+<li>背景介绍</li>
+</ol>
+<p>Tracy的分享主要是围绕零信任为何能防御0Day攻击展开，如图1所示，简单来说就是基于CVE等已知扫描检测手段无法发现未知攻击。零信任，默认拒绝所以动作，只有在允许的列表里才会被授权，已知、未知尽在掌握。笔者在这里想要聊一聊Tracy使用的开源工具——NeuVector。</p>
+<p><img src="./images/media/image1.png"
+style="width:5.76806in;height:3.21042in" /></p>
+<p>图1 传统控制和零信任控制对比</p>
+<p>SUSE相信大家都很熟悉了，是一家全球性的开源软件公司，提供企业级的Linux操作系统和相关的解决方案。而Tracy分享的理念的基础支撑其实是来自NeuVector。接下来请和笔者一起来扒一扒NeuVector的历史。</p>
+<p>NeuVector由黄飞（Fei Huang）和段磊（Gary
+Duan）于2015年在美国加利福尼亚州联合创立。创立之初公司专注于容器安全，具体就是网络监测和容器防火墙。公司创立后发展迅速，于21年被SUSE收购。此举极大地增强了Rancher的安全合规板块，从此NeuVector也正式成为SUSE的一部分，大概也是由此开始
+，NeuVector贴上零信任标签。</p>
+<ol>
+<li>什么是零信任</li>
+</ol>
+<p>传统的网络安全模型通常采用边界防御，即在内部网络和外部网络之间建立防火墙来保护内部资源。然而，随着网络边界的模糊化和攻击技术的不断演进，边界防御已经不足以提供足够的安全性。如图2所示[1]，黄飞在一次网络研讨会中也表明，随着业务云化的不断推进，安全模型也逐步向零信任演进。</p>
+<p><img src="./images/media/image2.png"
+style="width:5.76806in;height:3.05486in"
+alt="C:\Users\zhangxiaoyong\Documents\WXWork\1688851816357974\Cache\Image\2023-05\WXWorkCapture_16842897606944.png" /></p>
+<p>图2 安全模型的演进</p>
+<p>正如Tracy在一次网络研讨会中所说的那样[2]，零信任（Zero
+Trust）的核心原则是&quot;永远不信任，始终验证&quot;。它基于一种假设，即无论是内部用户、外部用户还是设备，都不能被默认信任。</p>
+<p><img src="./images/media/image3.png"
+style="width:5.76806in;height:3.21597in"
+alt="C:\Users\zhangxiaoyong\Documents\WXWork\1688851816357974\Cache\Image\2023-05\WXWorkCapture_16843125775399.png" /></p>
+<p>图3 Tracy Walker关于零信任的解释</p>
+<p>零信任（Zero
+Trust）是一种安全模型，不是一个具体的产品或技术。它的核心理念是不信任任何设备、用户或应用程序，并将访问控制和安全策略放在应用程序层面。零信任安全模型认为，每个用户和设备都可能成为攻击者，因此必须对它们进行身份验证、授权和访问控制，以保护敏感数据和应用程序。这种基于认证和授权的精细访问控制可以减少攻击者的潜在影响范围，并提供更高的安全性。</p>
+<p>因此，零信任安全模型强调了持续的身份验证、访问控制和监控，以确保只有经过验证和授权的用户和设备能够获得访问权限。它不仅仅关注网络边界，而是将安全性扩展到应用程序、数据和用户层面，从而提供更全面的安全保护。</p>
+<ol>
+<li>NeuVector和零信任的关系</li>
+</ol>
+<p>NeuVector的产品提供了基于容器的安全解决方案，帮助用户保护他们的容器环境。它包括实时威胁检测、入侵检测和预防、运行时安全策略、自动响应等功能，可以帮助用户识别和防止各种攻击，包括内部和外部攻击、未知攻击和高级威胁等。</p>
+<p>NeuVector的产品可以作为实现零信任安全模型的一部分，提供对容器环境的实时安全保护和威胁检测。但是，实现零信任安全模型还需要其他技术的支持，如多因素身份验证、数据加密等。</p>
+<ol>
+<li>构建零信任云原生安全底座的方案</li>
+</ol>
+<h2 id="51-suse的安全底座组件"><a href="#51-suse的安全底座组件" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>5.1 SUSE的安全底座组件</h2>
+<p>NeuVector加入SUSE大家庭后，结合其他产品如SUSE
+Linux、Harvester和Longhorn等基本可构成一个可信安全环境，笔者将其称为零信任云原生安全底座(简称安全底座)。如图4所示，笔者在NeuVector网络研讨会中也发现他们关于此的介绍，接下来我们来简单了解下该方案的组成以及这些产品在安全底座中的作用：</p>
+<p><img src="./images/media/image4.png"
+style="width:5.76806in;height:3.00903in" /></p>
+<p>图4 SUSE零信任环境结构</p>
+<p>NeuVector：是一个容器防火墙解决方案，用于保护容器化应用程序的安全。它通过深度数据包检测（DPI）和容器运行时保护，提供容器级别的入侵检测和防御，监控和阻止恶意流量和攻击。NeuVector帮助确保容器环境的安全性，并提供对容器网络流量的可见性和控制。</p>
+<p>Rancher：是一个开源的容器管理平台，提供了集群管理、应用程序编排、监控和日志、身份认证和访问控制等功能，帮助用户简单且快速的部署一个可行的安全底座。</p>
+<p>SUSE Linux，Harvester：SUSE
+Linux作为一个企业级Linux操作系统，提供了可靠、安全和可扩展的基础设施，用于构建和部署应用程序。它提供了强大的安全功能和工具，包括访问控制、身份验证、文件加密等，以帮助建立安全的基础架构，为环境提供了
+一个减少攻击面的系统镜像；Harvester是一个基于Kubernetes的开源虚拟化平台，为容器化应用程序提供了高性能和简化的虚拟机管理解决方案。它利用Kubernetes的自动化和可伸缩性，提供了可靠的虚拟化基础设施，帮助构建安全的应用环境。</p>
+<p>Longhorn：Longhorn是一个开源的分布式块存储系统，为容器化环境提供持久化存储解决方案。它通过提供数据加密、快照和恢复等功能，保护存储在容器中的数据的安全性和可靠性。</p>
+<p>将这些组件组合在一起，可以构建一个强大的零信任安全底座。通过NeuVector提供的容器防火墙功能，SUSE
+Linux提供的安全基础设施，Harvester提供的虚拟化管理和Longhorn提供的数据存储，可以实现对容器化环境的全面安全保护和管理。这种组合可以帮助用户快速建立一个基于零信任原则的安全底座，确保应用程序和数据的安全性和保密性。</p>
+<h2 id="52-suse的零信任实践"><a href="#52-suse的零信任实践" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>5.2 SUSE的零信任实践</h2>
+<p>如图5所示，通过以上组件的结合，NeuVector针对零信任在云原生环境下的实践控制项做了梳理[3]。接下来笔者将以最小化攻击面为例做一些简要的说明：</p>
+<p><img src="./images/media/image5.png"
+style="width:5.76806in;height:3.12708in"
+alt="C:\Users\zhangxiaoyong\Documents\WXWork\1688851816357974\Cache\Image\2023-05\WXWorkCapture_16842904244193.png" /></p>
+<p>图5 云原生应用的实用零信任控制</p>
+<h3 id="521-生命周期中的漏洞风险状态管理"><a href="#521-生命周期中的漏洞风险状态管理" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>5.2.1 生命周期中的漏洞、风险、状态管理</h3>
+<p>笔者理解，如图6所示[4]，这需要在应用程序的整个生命周期中，对漏洞和风险进行管理，确保及时修补和更新，以减少潜在的攻击面。笔者将从以下几个方面简要分析：</p>
+<p><img src="./images/media/image6.png"
+style="width:5.76806in;height:2.85764in"
+alt="https://neuvector.com/wp-content/uploads/2020/08/NeuVectorPipeline.png" /></p>
+<p>图6 NeuVector全生命周期安全图</p>
+<p>操作系统和虚拟化：这其实由SUSE的SUSE Linux，Harvester所提供。</p>
+<p>代码层：由于官方有关于Sonatype
+Nexus的集成描述[5]，笔者猜测，NeuVector结合了Sonatype
+Nexus能够做到CI/CD阶段检测项目中使用的组件是否存在已知的安全漏洞供应链扫描并添加准入规则来保障项目组件的安全性。</p>
+<p>镜像层面：NeuVector的自动响应规则结合JFrog
+Xray镜像扫描能力，NeuVector允许根据JFrog
+Xray的扫描结果配置自动响应规则。根据镜像中发现的安全漏洞或合规性问题，可以定义特定的规则和操作来保护容器环境。如图7所示，可以设置规则，如果镜像中存在高危漏洞，则自动拒绝该镜像的引用,
+将被扫描过的镜像仓库定义为合法仓库，仅允许合法仓库被使用等。</p>
+<p><img src="./images/media/image7.png"
+style="width:5.76806in;height:3.22014in"
+alt="C:\Users\zhangxiaoyong\Documents\WXWork\1688851816357974\Cache\Image\2023-05\WXWorkCapture_1684294147178.png" /></p>
+<p>图7 镜像规格准入控制</p>
+<p>运行时：将进程和文件系统监控与第7层网络检查结合使用，对网络、数据包、零日攻击和应用攻击（如
+DDoS 和
+DNS）的唯一实时识别和阻止，可以在不中断正常容器会话的情况下阻止未经授权的容器活动或来自容器的连接，其实也就是透明的意思，对正常环境没有影响。</p>
+<h3 id="522-默认拒绝"><a href="#522-默认拒绝" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>5.2.2 默认拒绝</h3>
+<p>所有实体都被默认视为不受信任，需要经过验证和授权才能访问资源和服务，这里其实就是容器防火墙的默认拒绝策略。</p>
+<h3 id="523强制执行最低权限访问"><a href="#523强制执行最低权限访问" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>5.2.3强制执行最低权限访问</h3>
+<p>采取最小权限原则，只授予实体所需的最低权限，以减少潜在的风险和攻击面。这里包含三个方面的内容，数据的采集和规则的生成以及应用。</p>
+<p>NeuVector表明其使用的是第7层网络检测技术而不是eBPF和Istio技术去做流量采集也不是。没有使用Istio的原因是，Istio无法对已经加密的流量做分析（如HTTPS协议的请求），这很容易获取不到明文或者给攻击者留下伪装的途径，而<strong>I</strong>stio
+Egress
+Gateway则需要额外添加网络策略确保所有出口流量都流经网关，这将增加配置的复杂性。关于为何没有使用eBPF，笔者没有在官方资料中找到明确的原因，只在网络研讨会议中看到他们认为在网络侧做流量分析能够获取的更加全面，笔者猜想还有另外一个原因是eBPF对系统版本是有强制要求的，这意味着旧版本的系统环境将无法使用这一技术，这将非常不友好。基于第7层深度数据包检测的技术其实也就是DPI（Deep
+Packet
+Inspection）可以识别多种应用层协议，关于加密协议的流量识别，在官方介绍里简要说明是通过对允许的NDS的跟踪，联系上下文信息间接解析流量内容[6]。由此基于DPI技术NeuVector可以做到如图8所示的包含Istio等所有流量的解析和追踪。</p>
+<p><img src="./images/media/image8.png"
+style="width:5.76806in;height:3.21944in"
+alt="C:\Users\zhangxiaoyong\Documents\WXWork\1688851816357974\Cache\Image\2023-05\WXWorkCapture_16843137455972.png" /></p>
+<p>图8 NeuVector对Istio流量的可视化</p>
+<p>通过对详细流量的解析，NeuVector很容易获取环境的行为原始信息，原始信息匹配如图9所示的各类规则可以生成对应类型的安全事件。</p>
+<p><img src="./images/media/image9.png"
+style="width:5.76806in;height:3.225in" /></p>
+<p>图9 策略规格</p>
+<p>原始信息结合开放策略代理（OPA）生成CRD策略（这就是NeuVector宣称的安全即代码），并应用到环境中使策略生效[7]。</p>
+<ol>
+<li>总结</li>
+</ol>
+<p>在关注这次RSA议题之前，笔者也和相关同事讨论过零信任云安全底座的事情。当时笔者倾向于在内核级别去做云场景下的零信任，笔者期望在内核层之上不做过多关注，只从最底层处去做限制。对Tracy的这次分享的背后挖掘也拓宽了笔者的视野。针对NeuVector的零信任云原生安全底座解决方案，笔者有以下两点疑虑：</p>
+<p>第一，当企业决定将
+NeuVector真正运用在实际环境中时候，如何判断哪些策略该被允许将是一个让人头疼的问题。尽管他们宣称环境拥有一定的一致性，因此可以导出规则到其他环境，但针对云场景下数以万计的微服务，谁来做合法性的判断，谁又能做这将是个未知数。虽然Tracy宣称他们没使用机器学习技术，但笔者感觉使用机器学习自动判断服务的哪些动作是合法的，从而自动给出策略建议也许是一个不错的方案。</p>
+<p>第二，假如攻击者已经早于NeuVector对环境做了控制，例如攻击者已经掌握集群的部分CRD资源管理权限，又或者攻击者做到了内核级别的劫持，那NeuVector基于CRD发出的所有控制策略将形同虚设。基于此，笔者还是保留基于内核层做控制的建议。</p>
+<p>由于篇幅有限，非常遗憾没有针对NeuVector的底层原理进行说明，如有兴趣的朋友可以关注官方渠道进行交流。</p>
+<p>参考文献</p>
+<p>[1] SUSE.Zero-Trust Security for Kubernetes and Container Workloads</p>
+<p>[2] SUSE.Zero Effort Zero Trust for Blocking Zero Days in Kubernetes</p>
+<p>[3] <a href="https://neuvector.com/about/events/" target="_blank" rel="noopener">https://neuvector.com/about/events/</a></p>
+<p>[4] <a href="https://neuvector.com/wp-content/uploads/2020/08/NeuVectorPipeline.png" target="_blank" rel="noopener">https://neuvector.com/wp-content/uploads/2020/08/NeuVectorPipeline.png</a></p>
+<p>[5] <a href="https://neuvector.com/products/integrations/" target="_blank" rel="noopener">https://neuvector.com/products/integrations/</a></p>
+<p>[6] Neuvector. How to Enforce Egress Container Security Policies in
+Kubernetes, OpenShift, and Istio</p>
+<p>[7] Neuvector. Use Cloud-Native Tools OPA and CRD to Protect
+Applications from Pipeline to Production</p>
+
+            </div>
+
+            
+    
+    
+        <ul class="post-copyright">
+            <li class="copyright-item author"><span class="copyright-item-text">作者</span>：<a href="https://cloud-Xolt.github.io/" class="p-author h-card" target="_blank" rel="noopener">JOON</a></li>
+            
+                
+                
+                
+                
+                <li class="copyright-item link"><span class="copyright-item-text">链接</span>：<a href="/posts/rsac-zerotrust/" target="_blank" rel="noopener">https://cloud-Xolt.github.io/posts/rsac-zerotrust/</a></li>
+            
+            
+        </ul>
+    
+
+
+
+        </article>
+
+        
+
+        
+    <div class="updated-badge-container">
+        <span title="Updated @ 2023-12-06 18:19:48 CST" style="cursor:help">
+
+<svg xmlns="http://www.w3.org/2000/svg" width="130" height="20" class="updated-badge"><linearGradient id="b" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><clipPath id="a"><rect width="130" height="20" rx="3" fill="#fff"/></clipPath><g clip-path="url(#a)"><path class="updated-badge-left" d="M0 0h55v20H0z"/><path class="updated-badge-right" d="M55 0h75v20H55z"/><path fill="url(#b)" d="M0 0h130v20H0z"/></g><g fill="#fff" text-anchor="middle" font-size="110"><text x="285" y="150" fill="#010101" fill-opacity=".3" textLength="450" transform="scale(.1)">updated</text><text x="285" y="140" textLength="450" transform="scale(.1)">updated</text><text x="915" y="150" fill="#010101" fill-opacity=".3" textLength="650" transform="scale(.1)">2023-12-06</text><text x="915" y="140" textLength="650" transform="scale(.1)">2023-12-06</text></g></svg>
+        </span></div>
+
+
+
+        
+
+
+        
+
+
+        
+    
+    
+
+
+
+        
+    
+
+
+
+        
+
+
+        
+
+
+        
+    
+        
+        
+    
+    
+    
+    
+        <ul class="post-nav">
+            
+            
+                <li class="post-nav-next">
+                    <a href="/posts/rsac-endorlabs/" rel="next">RSA创新沙盒盘点｜Endor Labs—让开源软件使用更安全 &gt;</a>
+                </li>
+            
+        </ul>
+    
+
+
+
+        
+
+
+    </div>
+</main>
+
+
+            
+    <div id="back-to-top" class="back-to-top">
+        <a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon arrow-up"><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg></a>
+    </div>
+
+
+            
+
+        </div>
+        
+
+        
+
+
+
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@latest/dist/medium-zoom.min.js"></script>
+
+<script>
+    let imgNodes = document.querySelectorAll('div.post-body img');
+    imgNodes = Array.from(imgNodes).filter(node => node.parentNode.tagName !== "A");
+
+    mediumZoom(imgNodes, {
+        background: 'hsla(var(--color-bg-h), var(--color-bg-s), var(--color-bg-l), 0.95)'
+    })
+</script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/instant.page@5.1.0/instantpage.min.js" type="module" defer></script>
+
+
+
+
+
+
+    </body>
+</html>
