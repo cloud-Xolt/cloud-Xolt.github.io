@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#">
+    <meta charset="UTF-8" />
+
+    <meta name="generator" content="Hugo 0.120.0"><meta name="theme-color" content="#fff" />
+    <meta name="color-scheme" content="light dark">
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
+    
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <title>RSA创新沙盒盘点｜Endor Labs—让开源软件使用更安全 | JOON</title>
+
+    <link rel="stylesheet" href="/css/meme.min.985acea6dc6d7aae30cac83f51e0408b0e4ebce1f290c57165d41808d098189b.css"/>
+
+    
+    
+        
+            <script src="/js/meme.min.e46abe484398824efc70edec3126437916974df592d7c395b44f8f60e0f57e9d.js"></script>
+
+        
+    
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB&#43;Garamond:ital,wght@0,400;0,500;0,700;1,400;1,700&amp;family=Noto&#43;Serif&#43;SC:wght@400;500;700&amp;family=Source&#43;Code&#43;Pro:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" media="print" onload="this.media='all'" />
+        <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB&#43;Garamond:ital,wght@0,400;0,500;0,700;1,400;1,700&amp;family=Noto&#43;Serif&#43;SC:wght@400;500;700&amp;family=Source&#43;Code&#43;Pro:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" /></noscript>
+
+    <meta name="author" content="JOON" /><meta name="description" content="专题 2023RSAC创新沙盒 标签 供应链软件安全 开源软件安全 首发于创新研究院官方博客 公……" />
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#2a6df4" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="JOON" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="JOON" />
+    <meta name="msapplication-starturl" content="../../" />
+    <meta name="msapplication-TileColor" content="#fff" />
+    <meta name="msapplication-TileImage" content="../../icons/mstile-150x150.png" />
+    <link rel="manifest" href="/manifest.json" />
+
+    
+    
+
+    
+        <link rel="canonical" href="https://cloud-Xolt.github.io/posts/rsac-endorlabs/" />
+    
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "datePublished": "2023-12-06T18:04:40+08:00",
+        "dateModified": "2023-12-06T18:07:38+08:00",
+        "url": "https://cloud-Xolt.github.io/posts/rsac-endorlabs/",
+        "headline": "RSA创新沙盒盘点｜Endor Labs—让开源软件使用更安全",
+        "description": "专题 2023RSAC创新沙盒 标签 供应链软件安全 开源软件安全 首发于创新研究院官方博客 公……",
+        "inLanguage" : "zh-CN",
+        "articleSection": "posts",
+        "wordCount":  5674 ,
+        "image": ["https://cloud-Xolt.github.io/images/media/image1.jpeg","https://cloud-Xolt.github.io/images/media/image2.jpeg","https://cloud-Xolt.github.io/images/media/image3.png","https://cloud-Xolt.github.io/images/media/image4.png","https://cloud-Xolt.github.io/images/media/image5.png","https://cloud-Xolt.github.io/images/media/image6.png","https://cloud-Xolt.github.io/images/media/image7.png","https://cloud-Xolt.github.io/images/media/image8.png","https://cloud-Xolt.github.io/images/media/image9.png","https://cloud-Xolt.github.io/images/media/image10.png","https://cloud-Xolt.github.io/images/media/image11.png","https://cloud-Xolt.github.io/images/media/image12.png","https://cloud-Xolt.github.io/images/media/image13.jpeg"],
+        "author": {
+            "@type": "Person",
+            "description": "Nothing...",
+            "email": "wo2g9cai@gmail.com",
+            "url": "https://cloud-Xolt.github.io/",
+            "name": "JOON"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "JOON",
+            "url": "https://cloud-Xolt.github.io/"
+        },
+        "mainEntityOfPage": {
+            "@type": "WebSite",
+            "@id": "https://cloud-Xolt.github.io/"
+        }
+    }
+</script>
+
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+
+
+<meta name="twitter:creator" content="@xxxx" />
+
+    
+
+
+
+<meta property="og:title" content="RSA创新沙盒盘点｜Endor Labs—让开源软件使用更安全" />
+<meta property="og:description" content="专题 2023RSAC创新沙盒 标签 供应链软件安全 开源软件安全 首发于创新研究院官方博客 公……" />
+<meta property="og:url" content="https://cloud-Xolt.github.io/posts/rsac-endorlabs/" />
+<meta property="og:site_name" content="JOON" />
+<meta property="og:locale" content="zh" /><meta property="og:image" content="https://cloud-Xolt.github.io/images/media/image1.jpeg" />
+<meta property="og:type" content="article" />
+    <meta property="article:published_time" content="2023-12-06T18:04:40&#43;08:00" />
+    <meta property="article:modified_time" content="2023-12-06T18:07:38&#43;08:00" />
+    
+    <meta property="article:section" content="posts" />
+
+
+
+
+    
+    
+
+    
+</head>
+
+    <body>
+        <div class="container">
+            
+    <header class="header">
+        
+            <div class="header-wrapper">
+                <div class="header-inner single">
+                    
+    <div class="site-brand">
+        
+            <a href="/" class="brand">JOON</a>
+        
+    </div>
+
+                    <nav class="nav">
+    <ul class="menu" id="menu">
+        
+            
+        
+        
+        
+        
+            
+                <li class="menu-item active"><a href="/posts/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon archive"><path d="M32 448c0 17.7 14.3 32 32 32h384c17.7 0 32-14.3 32-32V160H32v288zm160-212c0-6.6 5.4-12 12-12h104c6.6 0 12 5.4 12 12v8c0 6.6-5.4 12-12 12H204c-6.6 0-12-5.4-12-12v-8zM480 32H32C14.3 32 0 46.3 0 64v48c0 8.8 7.2 16 16 16h480c8.8 0 16-7.2 16-16V64c0-17.7-14.3-32-32-32z"/></svg><span class="menu-item-name">文章摘要</span></a>
+                </li>
+            
+        
+            
+                <li class="menu-item"><a href="/tags/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="icon tags"><path d="M497.941 225.941L286.059 14.059A48 48 0 0 0 252.118 0H48C21.49 0 0 21.49 0 48v204.118a48 48 0 0 0 14.059 33.941l211.882 211.882c18.744 18.745 49.136 18.746 67.882 0l204.118-204.118c18.745-18.745 18.745-49.137 0-67.882zM112 160c-26.51 0-48-21.49-48-48s21.49-48 48-48 48 21.49 48 48-21.49 48-48 48zm513.941 133.823L421.823 497.941c-18.745 18.745-49.137 18.745-67.882 0l-.36-.36L527.64 323.522c16.999-16.999 26.36-39.6 26.36-63.64s-9.362-46.641-26.36-63.64L331.397 0h48.721a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882z"/></svg><span class="menu-item-name">生活瞬间</span></a>
+                </li>
+            
+        
+            
+                <li class="menu-item"><a href="/about/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" class="icon user-circle"><path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 96c48.6 0 88 39.4 88 88s-39.4 88-88 88-88-39.4-88-88 39.4-88 88-88zm0 344c-58.7 0-111.3-26.6-146.5-68.2 18.8-35.4 55.6-59.8 98.5-59.8 2.4 0 4.8.4 7.1 1.1 13 4.2 26.6 6.9 40.9 6.9 14.3 0 28-2.7 40.9-6.9 2.3-.7 4.7-1.1 7.1-1.1 42.9 0 79.7 24.4 98.5 59.8C359.3 421.4 306.7 448 248 448z"/></svg><span class="menu-item-name">关于我</span></a>
+                </li>
+            
+        
+            
+                
+                    
+                    
+                        <li class="menu-item">
+                            <a id="theme-switcher" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon theme-icon-light"><path d="M193.2 104.5l48.8-97.5a18 18 0 0128 0l48.8 97.5 103.4 -34.5a18 18 0 0119.8 19.8l-34.5 103.4l97.5 48.8a18 18 0 010 28l-97.5 48.8 34.5 103.4a18 18 0 01-19.8 19.8l-103.4-34.5-48.8 97.5a18 18 0 01-28 0l-48.8-97.5l-103.4 34.5a18 18 0 01-19.8-19.8l34.5-103.4-97.5-48.8a18 18 0 010-28l97.5-48.8-34.5-103.4a18 18 0 0119.8-19.8zM256 128a128 128 0 10.01 0M256 160a96 96 0 10.01 0"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon theme-icon-dark"><path d="M27 412a256 256 0 10154-407a11.5 11.5 0 00-5 20a201.5 201.5 0 01-134 374a11.5 11.5 0 00-15 13"/></svg></a>
+                        </li>
+                    
+                
+            
+        
+    </ul>
+</nav>
+
+                    
+                </div>
+            </div>
+            
+    <input type="checkbox" id="nav-toggle" aria-hidden="true" />
+    <label for="nav-toggle" class="nav-toggle"></label>
+    <label for="nav-toggle" class="nav-curtain"></label>
+
+
+        
+    </header>
+
+
+
+
+            
+            
+    <main class="main single" id="main">
+    <div class="main-inner">
+
+        
+
+        <article class="content post h-entry" data-align="justify" data-type="posts" data-toc-num="true">
+
+            <h1 class="post-title p-name">RSA创新沙盒盘点｜Endor Labs—让开源软件使用更安全</h1>
+
+            
+
+            
+                
+            
+
+            
+                
+
+<div class="post-meta">
+    
+        
+        <time datetime="2023-12-06T18:04:40&#43;08:00" class="post-meta-item published dt-published"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;2023.12.6</time>
+    
+    
+        
+        <time datetime="2023-12-06T18:07:38&#43;08:00" class="post-meta-item modified dt-updated"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M400 64h-48V12c0-6.627-5.373-12-12-12h-40c-6.627 0-12 5.373-12 12v52H160V12c0-6.627-5.373-12-12-12h-40c-6.627 0-12 5.373-12 12v52H48C21.49 64 0 85.49 0 112v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm-6 400H54a6 6 0 0 1-6-6V160h352v298a6 6 0 0 1-6 6zm-52.849-200.65L198.842 404.519c-4.705 4.667-12.303 4.637-16.971-.068l-75.091-75.699c-4.667-4.705-4.637-12.303.068-16.971l22.719-22.536c4.705-4.667 12.303-4.637 16.97.069l44.104 44.461 111.072-110.181c4.705-4.667 12.303-4.637 16.971.068l22.536 22.718c4.667 4.705 4.636 12.303-.069 16.97z"/></svg>&nbsp;2023.12.6</time>
+    
+    
+    
+        
+        
+        
+            
+        
+    
+    
+        
+        <span class="post-meta-item wordcount"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;5674</span>
+    
+    
+        
+        <span class="post-meta-item reading-time"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;12&nbsp;分钟</span>
+    
+    
+    
+</div>
+
+            
+
+            <div class="post-body e-content">
+                <blockquote>
+<p>专题 2023RSAC创新沙盒 标签 供应链软件安全 开源软件安全</br>
+首发于<a href="https://mp.weixin.qq.com/s/UuHeoyscp_q7sPymLddnuQ" target="_blank" rel="noopener">创新研究院官方博客</a></p>
+</blockquote>
+<ol>
+<li>公司介绍</li>
+</ol>
+<p>Endor Labs 于2021年注册，是一家专注于供应链安全的初创公司。Varun Badhwar
+和 Dimitri
+Stiliadis是公司的联合创始人，两人此前均有相似的成功创业经历。在创立Endor
+Labs之前Varun
+Badhwar先后创立了CipherCloud和RedLock公司，其中RedLock后来被Palo Alto
+Networks收购。Dimitri Stiliadis在2015年创立了Aporeto公司，2020年也被Palo
+Alto Networks收购。两人进入Palo
+Alto后遇到了新的安全挑战(工程人员和开发人员被大量的开源软件依赖告警所淹没)，两人随即创立了Endor
+Labs。</p>
+<p><img src="./images/media/image1.jpeg"
+style="width:2.15765in;height:2.15765in" alt="Varun Badhwar" /><img src="./images/media/image2.jpeg"
+style="width:2.15765in;height:2.15765in" alt="Dimitri Stiliadis" /></p>
+<p>图1 公司创始人（左为Varun Badhwar，右为Dimitri Stiliadis）</p>
+<p>其官网资料显示，Endor Labs在2022年10月左右获得了Lightspeed Venture
+Partners、Dell Technology Capital和Sierra
+Ventures以及几位行业知名人士共25万美元的种子投资。截止2022年11月，Endor
+Labs已经拥有30多名员工，其中大多数技术人员分布于美国和印度两地。Endor
+Labs于2022年发布了依赖关系生命周期管理平台，该平台通过安全地评估、维护和更新依赖关系来帮助开发和安全团队最大限度地提高软件重用率，降低开源软件安全风险，确保开发人员使用安全的开源软件（OSS）加速开发周期。</p>
+<ol>
+<li>背景介绍</li>
+</ol>
+<p>云计算时代最底层需求逻辑是什么？答案是“快”！于是出现了“敏捷”、“智能”、“弹性”等待一系列相应技术或者方案。作为服务链路前端的生产者-开发人员，引用开源包来加速开发的确不失为一种有效的应对方法。</p>
+<p>Endor Labs营销副总裁Ron
+Harnik在一篇文章中宣称“现代应用程序中百分之八十的代码不是开发人员编写的代码，而是开源包的代码”[1]。这一描述并不是没有根据，如图2所示[2]，Forrester
+2021报告显示过去几年内产品代码中已经包含了大量的开源代码，而且占比也逐年上升，到2019年已达到70%，因此80%的占比预估也是相对合理的。</p>
+<p><img src="./images/media/image3.png"
+style="width:4.54363in;height:2.37028in" /></p>
+<p>图2 开源代码占比统计</p>
+<p>随着包含大量开源软件的应用被部署并暴露到网络中，如SolarWinds和Log4j等由上游供应链软件引入安全风险导致的攻击事件也频频出现在大众的视野里。如图3所示[3]，近10年来开源软件供应链攻击事件大体呈上升趋势。</p>
+<p><img src="./images/media/image4.png"
+style="width:4.77765in;height:2.45152in" /></p>
+<p>图3 开源软件供应链近十年的攻击事件趋势</p>
+<p>综合来看，开源软件在整体产品中使用占比越来越高，开源软件对整体产品安全的影响也会越来越高。正如Endor
+Labs创始人前期所遇到的问题一样，SCA工具生成了海量的与 OSS
+依赖关系相关的告警，然而除了开发人员手动进行代码审查之外，没有更好的方法可以验证这些报告的漏洞是否真实。同时随着国际贸易摩擦加重，全球化或逐步转向区域化保护，2022年初美国召开的开源软件安全会议也将开源软件提升至国家战略层面[4]。如何有效治理开源软件的引入的安全问题成了所有组织最为头痛的问题之一。</p>
+<ol>
+<li>产品介绍</li>
+</ol>
+<p>4.1 关于部署形态和执行效率</p>
+<p>Endor
+Labs官网宣称其是一个基于云的服务，可以在几分钟内部署任何的客户环境中。产品的价值可在部署后数小时内得到证明。因此笔者猜测该产品可能是支持容器化部署，并且单产品的全量开源软件评估可能在10小时内，不会太快。</p>
+<p>4.2 准确的软件材料清单（SBOM）</p>
+<p>作为安全合规必不可少的物料之一，SBOM可以帮助企业全面了解其软件供应链中使用的开源和第三方组件，从而更好地管理与保护软件供应链的安全性。</p>
+<p>Endor
+Labs支持通过静态代码分析和依赖关系分析结合生成软件供应链数据。如图4显示[5]，其提供一个集中化SBOM图形管理中心，支持创建、分析、存储和导出SBOM。</p>
+<p><img src="./images/media/image5.png"
+style="width:4.84416in;height:2.72476in"
+alt="https://uploads-ssl.webflow.com/629c94f2f665fd8f65f2537f/63433565eb3b66e43d07b24d_Project%20Details%20-%20Packages%20Tab.png" /></p>
+<p>图4 SBOM导出</p>
+<p>使用Endor Labs 生成 SBOM具有以下几个优势：</p>
+<ol>
+<li>
+<p>自动化生成：Endor Labs 采用自动化的方式生成
+SBOM，能够大幅提高生成效率，降低人为失误风险。</p>
+</li>
+<li>
+<p>完整性保障：Endor Labs 通过扫描整个软件供应链中的组件信息，确保 SBOM
+的完整性和准确性。</p>
+</li>
+<li>
+<p>实时更新：Endor Labs 的 SBOM 会随着软件供应链的变化而实时更新，确保
+SBOM 始终保持最新状态。</p>
+</li>
+<li>
+<p>易于管理：Endor Labs 生成的 SBOM
+采用标准格式，可以方便地导入到其他工具中进行管理和分析。</p>
+</li>
+<li>
+<p>支持多种格式：Endor Labs 支持生成多种格式的SBOM，如JSON、 SPDX 和
+CycloneDX等，以满足不同用户的需求。</p>
+</li>
+</ol>
+<p>4.3可视化的依赖关系展示</p>
+<p>Endor Labs
+通过将软件供应链中的所有组件及其依赖关系存储在数据库中，并通过基于web的用户界面将其可视化展示。如图5所示
+用户可以使用这个界面，快速浏览、分析和跟踪整个供应链软件成分。</p>
+<p><img src="./images/media/image6.png"
+style="width:4.57157in;height:2.57151in"
+alt="https://uploads-ssl.webflow.com/629c94f2f665fd8f65f2537f/6340e4502bdcd247cc109c78_Direct%20Dependency%20Context%20-%20Methods%20Tab.png" /></p>
+<p>图5 依赖关系可视化</p>
+<p>其可视化依赖关系将给开发人员和安全人员带来诸多好处，如：</p>
+<ol>
+<li>
+<p>缩短响应时间：通过展示易受攻击的软件包的使用位置，可视化展示可以帮助组织更快速地响应安全事件。</p>
+</li>
+<li>
+<p>获取清晰的依赖项地图：通过可视化展示，组织可以更好地了解每个包的直接和传递依赖项，并且可以更轻松地识别依赖项之间的关系。</p>
+</li>
+<li>
+<p>减少依赖关系总量：通过查找机会减少依赖关系总量，可视化展示可以帮助组织减少依赖项，从而降低复杂性和风险。</p>
+</li>
+<li>
+<p>查找常用依赖项版本：通过查找组织中最常用的依赖项版本，可视化展示可以帮助组织更好地管理软件组件，并确保组件的版本控制。</p>
+</li>
+</ol>
+<p>4.4 多维度风险评分，治理开源软件</p>
+<p>如图6 所示，Endor
+Labs使用多维风险评分机制来建立自动化审批和准入，实现了开源软件的治理。笔者分析，Endor
+Labs可能通过以下方式来实现开源软件的治理：</p>
+<ol>
+<li>
+<p>采集开源软件元数据：使用静态分析等综合技术来采集开源软件的元数据，包括版本号、许可证、依赖项、漏洞信息、受欢迎程度等。这些数据可以用于分析开源软件的风险程度。</p>
+</li>
+<li>
+<p>多维风险评分：从多个维度（如安全评分、受欢迎程度、活动和质量等）根据算法对开源软件进行评分,
+将评分结果可视化展示给用户，利用这些分数可以设置准入阈值，以帮助用户更好选择高质量的依赖项。</p>
+</li>
+<li>
+<p>自动化审批：当企业员工使用开源软件时，通过预先设置的准入阈值，自动化审批来确保开源软件的合规性。如果某个软件的风险评分超过了预设的阈值，Endor
+Labs会阻止其被使用。</p>
+</li>
+</ol>
+<p><img src="./images/media/image7.png"
+style="width:4.48466in;height:3.07386in"
+alt="https://uploads-ssl.webflow.com/629c94f2f665fd8f65f2537f/6343352ab9d4ce3eedb2b577_Dependency%20Details%20-%20Dependencies%20Tab%20(2).png" /></p>
+<p>图6 开源软件治理</p>
+<p>通过采用这些措施，Endor
+Labs可以帮助企业更好地管理开源软件，以提高开发速度并减少安全团队和开发团队之间的摩擦。</p>
+<p>4.5 最优依赖关系选择</p>
+<p>如图7和图8所示，依托于多维度的依赖项评分机制，Endor
+Labs还支持在IDE中为开发人员提供即时反馈，以便开发者在引入开源软件时就能做出最佳决策，最大限度地重用组织内的流行版本，降低风险和维护成本。</p>
+<p><img src="./images/media/image8.png"
+style="width:4.58793in;height:2.58071in"
+alt="https://uploads-ssl.webflow.com/629c94f2f665fd8f65f2537f/634105176a3b91177860ef53_Dependency%20Details%20-%20Overview%20Tab%20v1.png" /></p>
+<p>图7 依赖版本评分</p>
+<p><img src="./images/media/image9.png"
+style="width:4.53711in;height:2.94535in"
+alt="https://uploads-ssl.webflow.com/629c94f2f665fd8f65f2537f/63410047da79c94965adea43_1.1%20IDE%20Inline%20workflow_%20Display%20problems%20and%20reccomendations%20(1).png" /></p>
+<p>图8 Endor Labs支持IDE</p>
+<p>4.6 减少噪音，确定漏洞优先级，</p>
+<p>如图9所示，Endor
+Labs通过对开源软件安全危害和修复进行优先级评定，帮助开发团队和工程团队缩小安全修复范围(Endor
+Labs宣称可减少高达80%误报告警)，减少技术债务，专注于修复真正影响业务的漏洞。</p>
+<p><img src="./images/media/image10.png"
+style="width:4.6002in;height:2.58761in"
+alt="https://uploads-ssl.webflow.com/629c94f2f665fd8f65f2537f/634100b8b6d884b8f03653d9_Package%20Details%20-%20Findings%20Details%20(1).png" /></p>
+<p>图9 软件风险优先级</p>
+<p>笔者分析，其风险评定方式主要包含以下方式：</p>
+<ol>
+<li>
+<p>基于可达性的依赖关系分析：通过静态调用图在细粒度级别执行依赖关系分析，同时在内部使用动态调用图来形成基准，根据这些基准来衡量和优化调用图，结合两种分析技术，通过可达性分析算法计算每个依赖项的可达性程度。</p>
+</li>
+<li>
+<p>基于机器学习技术来减少噪音：利用多种数据源，如CVE数据库、NVD数据库和开源代码库等，对软件漏洞和安全漏洞进行全面分析和跟踪。然后，利用自然语言处理技术和机器学习算法来对漏洞进行自动化分类和评估，以减少噪音和确定漏洞的优先级。</p>
+</li>
+</ol>
+<p>4.7 供应链攻击检测和响应</p>
+<p>如图10所示，Endor
+Labs宣称其支持检测下一代攻击，例如域名仿冒和依赖混淆。监视已知漏洞行为。通过查明易受攻击的软件包的使用位置以及依赖于它的应用程序，快速响应问题。</p>
+<p><img src="./images/media/image11.png"
+style="width:4.77198in;height:2.68423in"
+alt="https://uploads-ssl.webflow.com/629c94f2f665fd8f65f2537f/634334852bdcd2a12d291b03_Package%20Details%20-%20Findings%20Aggregation%20View.png" /></p>
+<p>图10攻击检测</p>
+<p>笔者分析，其检测和响应可能通过以下方式实现：</p>
+<ol>
+<li>
+<p>提供严格的开源软件准入规则：设置合理的评分阈值，使用可靠的源（trusted
+sources）来减少供应链攻击。</p>
+</li>
+<li>
+<p>快速响应：基于多维度的安全评分和调用图，匹配攻击影响的对应漏洞，快速定位到调用位置，快速处置（如切断或替换等）。</p>
+</li>
+<li>
+<p>持续监控：持续检测历史版本发现的新漏洞或则新版本变化可能带来的影响，对现有开源库进行更新。</p>
+</li>
+</ol>
+<p>4.8 开源软件库的维护</p>
+<p>随着业务迭代或者开源工具的演进，部分开源软件可能不再被使用，或者历史引入的开源软件已经停止维护等等，正因为如此将给组织带来大量的被攻击风险。Endor
+Labs宣称支持通过以下方式对现有的开源软件进行持续维护，以规避以上问题。</p>
+<ol>
+<li>减少依赖</li>
+</ol>
+<blockquote>
+<p>删除未使用的依赖项可降低安全风险，还可以降低运营成本，并提高应用程序性能和构建时间。如图11所示，Endor
+Labs支持检测未使用的依赖项，以提醒开发团队将其删除。</p>
+</blockquote>
+<p><img src="./images/media/image12.png"
+style="width:4.90747in;height:2.81152in"
+alt="https://uploads-ssl.webflow.com/629c94f2f665fd8f65f2537f/634106ece45e014fafdaeeab_Project%20Details%20-%20Package%20Summary.png" /></p>
+<blockquote>
+<p>图11 开源软件依赖项检测</p>
+<p>笔者分析，Endor Labs依赖项的处理大致包含以下几个方面：</p>
+</blockquote>
+<ol>
+<li>
+<p>识别并删除未使用的依赖项：通过可达性依赖分析技术，分析应用程序中未被使用的依赖项，从而帮助团队识别并删除不必要的依赖项，减少攻击面。</p>
+</li>
+<li>
+<p>通过减少使用的依赖项数量来减少整体攻击面：通过优化依赖项的选择和使用，减少应用程序的依赖项数量，从而降低应用程序的整体攻击面。</p>
+</li>
+<li>
+<p>在冗余依赖项上整合版本：通过分析应用程序中的依赖项，识别并整合重复的依赖项版本，从而减少应用程序的攻击面。</p>
+</li>
+<li>
+<p>通过简化依赖项关系图缩短构建时间：通过优化依赖项的选择和使用，简化依赖项关系图，从而缩短构建时间，提高应用程序的开发效率。</p>
+</li>
+</ol>
+<!-- -->
+<ol>
+<li>未维护包检测</li>
+</ol>
+<p>Endor
+Labs支持检测开源软件是否被继续维护。为用户是否应删除、内部维护或替换依赖项的决策提供数据支撑。如果使用长期未维护的开源软件或者对应版本，当有对应的漏洞产生时，将无法及时被修复，这将对产品造成巨大的安全隐患。</p>
+<blockquote>
+<p>笔者分析，其检测手段可能包含以下内容:</p>
+</blockquote>
+<ol>
+<li>
+<p>监视开源软件社区：密切关注开源软件社区，了解开源软件的支持情况以及最新的安全修复。当一个软件项目被宣布不再维护时，在对应的软件信息进行标注。</p>
+</li>
+<li>
+<p>分析依赖项版本：分析软件项目的依赖项版本，并对废弃的版本进行跟踪。当一个废弃版本出现安全漏洞时，在软件信息进行告警，降低评分。</p>
+</li>
+</ol>
+<p>4.9 基于ChatGPT的智能问答机器人-DroidGPT</p>
+<p>Endor
+Labs结合ChatGPT推出了DroidGPT功能。如图12所示[6]，该功能支持针对开源软件安全问题进行交互式问答，获取即时的安全风险评估、漏洞分析和修复建议等信息。</p>
+<p><img src="./images/media/image13.jpeg"
+style="width:4.59035in;height:2.86341in"
+alt="https://uploads-ssl.webflow.com/629c94f2f665fd8f65f2537f/642decbb289f1949a3c36c45_Sequence%2001.00_00_28_49.Still001.jpg" /></p>
+<p>图12 DroidGPT使用展示</p>
+<p>从仅有的官方视频来看，Endor
+Labs目前对ChatGPT的应用还比较单一，即作为智能问答机器人帮助使用者更快地获取所需的信息。从技术实现上来讲，目前的结合现状只需要将采集的元数据和漏洞等信息作为输入，利用ChatGPT的自然语言处理技术，结合可视化交互式界面即可快速的集成并达到效果。</p>
+<p>5.0 产品对比</p>
+<p>在产品功能上来讲软件组合分析（SCA）工具在很多时候也被用来管理OSS，那么Endor
+Labs和SCA有什么区别呢？</p>
+<ol>
+<li>
+<p>检测精度：Endor
+Labs采用了更先进的算法和机器学习模型，可以更准确地识别潜在的漏洞和安全风险。而传统SCA通常只能基于已知的漏洞数据库和规则来进行检测，可能会漏检一些新的或未知的漏洞。</p>
+</li>
+<li>
+<p>可扩展性：Endor
+Labs可以轻松地适应大规模复杂软件供应链的检测需求，并提供了灵活的定制化配置选项。而传统SCA的覆盖范围和可扩展性可能会受到限制，难以应对复杂的供应链结构和高度定制化的软件组成。</p>
+</li>
+<li>
+<p>可视性：Endor
+Labs提供了直观易用的用户界面，帮助用户更快速地发现和解决潜在的安全问题。同时，Endor
+Labs还提供了自动化的检测和报告功能，可以减少用户的手动工作量。而传统SCA通常需要用户自行解释和处理检测结果，并缺乏自动化的报告和协作功能。</p>
+</li>
+<li>
+<p>响应能力：Endor
+Labs不仅能够帮助用户快速发现潜在的安全问题，还能够提供可操作的建议和响应方案，以便用户能够更快速地修复漏洞并降低安全风险。而传统SCA通常只能提供基础的漏洞信息和补丁推荐，需要用户自行研究和执行修复方案。</p>
+</li>
+<li>
+<p>数据源多样性：Endor
+Labs可以整合多种数据源，包括公共漏洞数据库、开源软件组件信息、代码库信息、社交媒体信息等，从多个角度来分析潜在的安全风险。而传统SCA主要依赖公共漏洞数据库和组件信息来进行分析，缺乏多样性和深度。</p>
+</li>
+</ol>
+<p>综上所述，SCA主要原理是通过元数据扫描，并将扫描结果和已知的漏洞数据进行比对，以此评估开源软件的安全性。Endor
+Labs的方法比传统SCA更全面，包括从不同方面收集和分析数据，使用机器学习算法来减少噪音并提高准确性。此外，Endor
+Labs还提供了可达性依赖分析和供应链攻击检测和响应的功能，以及针对对应的风险提供更多的可操作建议来支持内部团队进行安全闭环，以帮助用户更好地管理和降低供应链攻击的风险。</p>
+<ol>
+<li>总结</li>
+</ol>
+<p>从技术上来看，Endor
+Labs主要应用了静态分析、动态分析、依赖分析、机器学习等技术来实现开源软件安全风险评估和漏洞管理的解决方案。随着AI和机器学习技术的发展，Endor
+Labs可能会进一步提升其机器学习算法的能力或者在更多场景结合ChatGPT技术（比如调用关系图和未知风险监测方面），以更准确地识别和管理安全威胁。此外，随着可信计算等新技术的发展，Endor
+Labs可能会进一步扩展其解决方案的能力和范围，以满足不断增长的安全需求。</p>
+<p>从赛道上来看，随着开源软件在开发中的广泛应用，越来越多的公司依赖于开源组件来构建他们的应用。然而，这也意味着开源软件安全将变得更加重要。Endor
+Labs的技术着眼于解决这个问题，帮助企业降低开源软件的安全风险并确保其供应链的安全性。预计在未来，随着开源软件使用的继续增长，这个市场将会继续扩大，并且与之相关的供应链安全技术也将变得越来越重要。</p>
+<p>参考文献</p>
+<p>[1] Ron Harnik.Endor Labs Launches with $25M Seed Financing to Tackle
+Massive Sprawl of Open Source Software (OSS)</p>
+<p>[2] Forrester.The State Of Application Security, 2021</p>
+<p>[3] 中国科学院软件研究所.开源软件供应链安全研究综述</p>
+<p>[4] the White House.Readout of White House Meeting on Software Security</p>
+<p>[5] <a href="https://www.endorlabs.com/platform" target="_blank" rel="noopener">https://www.endorlabs.com/platform</a></p>
+<p>[6] <a href="https://www.endorlabs.com/droidgpt" target="_blank" rel="noopener">https://www.endorlabs.com/droidgpt</a></p>
+
+            </div>
+
+            
+    
+    
+        <ul class="post-copyright">
+            <li class="copyright-item author"><span class="copyright-item-text">作者</span>：<a href="https://cloud-Xolt.github.io/" class="p-author h-card" target="_blank" rel="noopener">JOON</a></li>
+            
+                
+                
+                
+                
+                <li class="copyright-item link"><span class="copyright-item-text">链接</span>：<a href="/posts/rsac-endorlabs/" target="_blank" rel="noopener">https://cloud-Xolt.github.io/posts/rsac-endorlabs/</a></li>
+            
+            
+        </ul>
+    
+
+
+
+        </article>
+
+        
+
+        
+    <div class="updated-badge-container">
+        <span title="Updated @ 2023-12-06 18:07:38 CST" style="cursor:help">
+
+<svg xmlns="http://www.w3.org/2000/svg" width="130" height="20" class="updated-badge"><linearGradient id="b" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><clipPath id="a"><rect width="130" height="20" rx="3" fill="#fff"/></clipPath><g clip-path="url(#a)"><path class="updated-badge-left" d="M0 0h55v20H0z"/><path class="updated-badge-right" d="M55 0h75v20H55z"/><path fill="url(#b)" d="M0 0h130v20H0z"/></g><g fill="#fff" text-anchor="middle" font-size="110"><text x="285" y="150" fill="#010101" fill-opacity=".3" textLength="450" transform="scale(.1)">updated</text><text x="285" y="140" textLength="450" transform="scale(.1)">updated</text><text x="915" y="150" fill="#010101" fill-opacity=".3" textLength="650" transform="scale(.1)">2023-12-06</text><text x="915" y="140" textLength="650" transform="scale(.1)">2023-12-06</text></g></svg>
+        </span></div>
+
+
+
+        
+
+
+        
+
+
+        
+    
+    
+
+
+
+        
+    
+
+
+
+        
+
+
+        
+
+
+        
+    
+        
+        
+    
+    
+    
+    
+        <ul class="post-nav">
+            
+            
+                <li class="post-nav-next">
+                    <a href="/posts/rsac-cado/" rel="next">RSA创新沙盒盘点｜Cado Security—云原生取证和响应 &gt;</a>
+                </li>
+            
+        </ul>
+    
+
+
+
+        
+
+
+    </div>
+</main>
+
+
+            
+    <div id="back-to-top" class="back-to-top">
+        <a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon arrow-up"><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg></a>
+    </div>
+
+
+            
+
+        </div>
+        
+
+        
+
+
+
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@latest/dist/medium-zoom.min.js"></script>
+
+<script>
+    let imgNodes = document.querySelectorAll('div.post-body img');
+    imgNodes = Array.from(imgNodes).filter(node => node.parentNode.tagName !== "A");
+
+    mediumZoom(imgNodes, {
+        background: 'hsla(var(--color-bg-h), var(--color-bg-s), var(--color-bg-l), 0.95)'
+    })
+</script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/instant.page@5.1.0/instantpage.min.js" type="module" defer></script>
+
+
+
+
+
+
+    </body>
+</html>
