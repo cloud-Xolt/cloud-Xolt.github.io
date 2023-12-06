@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#">
+    <meta charset="UTF-8" />
+
+    <meta name="generator" content="Hugo 0.120.0"><meta name="theme-color" content="#fff" />
+    <meta name="color-scheme" content="light dark">
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
+    
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <title>RSA创新沙盒盘点｜Cado Security—云原生取证和响应 | JOON</title>
+
+    <link rel="stylesheet" href="/css/meme.min.985acea6dc6d7aae30cac83f51e0408b0e4ebce1f290c57165d41808d098189b.css"/>
+
+    
+    
+        
+            <script src="/js/meme.min.e46abe484398824efc70edec3126437916974df592d7c395b44f8f60e0f57e9d.js"></script>
+
+        
+    
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB&#43;Garamond:ital,wght@0,400;0,500;0,700;1,400;1,700&amp;family=Noto&#43;Serif&#43;SC:wght@400;500;700&amp;family=Source&#43;Code&#43;Pro:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" media="print" onload="this.media='all'" />
+        <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB&#43;Garamond:ital,wght@0,400;0,500;0,700;1,400;1,700&amp;family=Noto&#43;Serif&#43;SC:wght@400;500;700&amp;family=Source&#43;Code&#43;Pro:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" /></noscript>
+
+    <meta name="author" content="JOON" /><meta name="description" content="专题 云原生 标签 取证和响应 首发于创新研究院官方博客 RSAConference2022将……" />
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#2a6df4" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="JOON" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="JOON" />
+    <meta name="msapplication-starturl" content="../../" />
+    <meta name="msapplication-TileColor" content="#fff" />
+    <meta name="msapplication-TileImage" content="../../icons/mstile-150x150.png" />
+    <link rel="manifest" href="/manifest.json" />
+
+    
+    
+
+    
+        <link rel="canonical" href="https://cloud-Xolt.github.io/posts/rsac-cado/" />
+    
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "datePublished": "2023-12-06T17:28:01+08:00",
+        "dateModified": "2023-12-06T17:52:38+08:00",
+        "url": "https://cloud-Xolt.github.io/posts/rsac-cado/",
+        "headline": "RSA创新沙盒盘点｜Cado Security—云原生取证和响应",
+        "description": "专题 云原生 标签 取证和响应 首发于创新研究院官方博客 RSAConference2022将……",
+        "inLanguage" : "zh-CN",
+        "articleSection": "posts",
+        "wordCount":  3965 ,
+        "image": ["https://cloud-Xolt.github.io/images/media/image1.png","https://cloud-Xolt.github.io/images/media/image2.png","https://cloud-Xolt.github.io/images/media/image3.png","https://cloud-Xolt.github.io/images/media/image4.png","https://cloud-Xolt.github.io/images/media/image5.png","https://cloud-Xolt.github.io/images/media/image6.png","https://cloud-Xolt.github.io/images/media/image7.png","https://cloud-Xolt.github.io/images/media/image8.png","https://cloud-Xolt.github.io/images/media/image9.png","https://cloud-Xolt.github.io/images/media/image10.png","https://cloud-Xolt.github.io/images/media/image11.png","https://cloud-Xolt.github.io/images/media/image12.png","https://cloud-Xolt.github.io/images/media/image13.png","https://cloud-Xolt.github.io/images/media/image14.png","https://cloud-Xolt.github.io/images/media/image15.png"],
+        "author": {
+            "@type": "Person",
+            "description": "Nothing...",
+            "email": "wo2g9cai@gmail.com",
+            "url": "https://cloud-Xolt.github.io/",
+            "name": "JOON"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "JOON",
+            "url": "https://cloud-Xolt.github.io/"
+        },
+        "mainEntityOfPage": {
+            "@type": "WebSite",
+            "@id": "https://cloud-Xolt.github.io/"
+        }
+    }
+</script>
+
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+
+
+<meta name="twitter:creator" content="@xxxx" />
+
+    
+
+
+
+<meta property="og:title" content="RSA创新沙盒盘点｜Cado Security—云原生取证和响应" />
+<meta property="og:description" content="专题 云原生 标签 取证和响应 首发于创新研究院官方博客 RSAConference2022将……" />
+<meta property="og:url" content="https://cloud-Xolt.github.io/posts/rsac-cado/" />
+<meta property="og:site_name" content="JOON" />
+<meta property="og:locale" content="zh" /><meta property="og:image" content="https://cloud-Xolt.github.io/images/media/image1.png" />
+<meta property="og:type" content="article" />
+    <meta property="article:published_time" content="2023-12-06T17:28:01&#43;08:00" />
+    <meta property="article:modified_time" content="2023-12-06T17:52:38&#43;08:00" />
+    
+    <meta property="article:section" content="posts" />
+
+
+
+
+    
+    
+
+    
+</head>
+
+    <body>
+        <div class="container">
+            
+    <header class="header">
+        
+            <div class="header-wrapper">
+                <div class="header-inner single">
+                    
+    <div class="site-brand">
+        
+            <a href="/" class="brand">JOON</a>
+        
+    </div>
+
+                    <nav class="nav">
+    <ul class="menu" id="menu">
+        
+            
+        
+        
+        
+        
+            
+                <li class="menu-item active"><a href="/posts/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon archive"><path d="M32 448c0 17.7 14.3 32 32 32h384c17.7 0 32-14.3 32-32V160H32v288zm160-212c0-6.6 5.4-12 12-12h104c6.6 0 12 5.4 12 12v8c0 6.6-5.4 12-12 12H204c-6.6 0-12-5.4-12-12v-8zM480 32H32C14.3 32 0 46.3 0 64v48c0 8.8 7.2 16 16 16h480c8.8 0 16-7.2 16-16V64c0-17.7-14.3-32-32-32z"/></svg><span class="menu-item-name">文章摘要</span></a>
+                </li>
+            
+        
+            
+                <li class="menu-item"><a href="/tags/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="icon tags"><path d="M497.941 225.941L286.059 14.059A48 48 0 0 0 252.118 0H48C21.49 0 0 21.49 0 48v204.118a48 48 0 0 0 14.059 33.941l211.882 211.882c18.744 18.745 49.136 18.746 67.882 0l204.118-204.118c18.745-18.745 18.745-49.137 0-67.882zM112 160c-26.51 0-48-21.49-48-48s21.49-48 48-48 48 21.49 48 48-21.49 48-48 48zm513.941 133.823L421.823 497.941c-18.745 18.745-49.137 18.745-67.882 0l-.36-.36L527.64 323.522c16.999-16.999 26.36-39.6 26.36-63.64s-9.362-46.641-26.36-63.64L331.397 0h48.721a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882z"/></svg><span class="menu-item-name">生活瞬间</span></a>
+                </li>
+            
+        
+            
+                <li class="menu-item"><a href="/about/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" class="icon user-circle"><path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 96c48.6 0 88 39.4 88 88s-39.4 88-88 88-88-39.4-88-88 39.4-88 88-88zm0 344c-58.7 0-111.3-26.6-146.5-68.2 18.8-35.4 55.6-59.8 98.5-59.8 2.4 0 4.8.4 7.1 1.1 13 4.2 26.6 6.9 40.9 6.9 14.3 0 28-2.7 40.9-6.9 2.3-.7 4.7-1.1 7.1-1.1 42.9 0 79.7 24.4 98.5 59.8C359.3 421.4 306.7 448 248 448z"/></svg><span class="menu-item-name">关于我</span></a>
+                </li>
+            
+        
+            
+                
+                    
+                    
+                        <li class="menu-item">
+                            <a id="theme-switcher" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon theme-icon-light"><path d="M193.2 104.5l48.8-97.5a18 18 0 0128 0l48.8 97.5 103.4 -34.5a18 18 0 0119.8 19.8l-34.5 103.4l97.5 48.8a18 18 0 010 28l-97.5 48.8 34.5 103.4a18 18 0 01-19.8 19.8l-103.4-34.5-48.8 97.5a18 18 0 01-28 0l-48.8-97.5l-103.4 34.5a18 18 0 01-19.8-19.8l34.5-103.4-97.5-48.8a18 18 0 010-28l97.5-48.8-34.5-103.4a18 18 0 0119.8-19.8zM256 128a128 128 0 10.01 0M256 160a96 96 0 10.01 0"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon theme-icon-dark"><path d="M27 412a256 256 0 10154-407a11.5 11.5 0 00-5 20a201.5 201.5 0 01-134 374a11.5 11.5 0 00-15 13"/></svg></a>
+                        </li>
+                    
+                
+            
+        
+    </ul>
+</nav>
+
+                    
+                </div>
+            </div>
+            
+    <input type="checkbox" id="nav-toggle" aria-hidden="true" />
+    <label for="nav-toggle" class="nav-toggle"></label>
+    <label for="nav-toggle" class="nav-curtain"></label>
+
+
+        
+    </header>
+
+
+
+
+            
+            
+    <main class="main single" id="main">
+    <div class="main-inner">
+
+        
+
+        <article class="content post h-entry" data-align="justify" data-type="posts" data-toc-num="true">
+
+            <h1 class="post-title p-name">RSA创新沙盒盘点｜Cado Security—云原生取证和响应</h1>
+
+            
+
+            
+                
+            
+
+            
+                
+
+<div class="post-meta">
+    
+        
+        <time datetime="2023-12-06T17:28:01&#43;08:00" class="post-meta-item published dt-published"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;2023.12.6</time>
+    
+    
+        
+        <time datetime="2023-12-06T17:52:38&#43;08:00" class="post-meta-item modified dt-updated"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M400 64h-48V12c0-6.627-5.373-12-12-12h-40c-6.627 0-12 5.373-12 12v52H160V12c0-6.627-5.373-12-12-12h-40c-6.627 0-12 5.373-12 12v52H48C21.49 64 0 85.49 0 112v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm-6 400H54a6 6 0 0 1-6-6V160h352v298a6 6 0 0 1-6 6zm-52.849-200.65L198.842 404.519c-4.705 4.667-12.303 4.637-16.971-.068l-75.091-75.699c-4.667-4.705-4.637-12.303.068-16.971l22.719-22.536c4.705-4.667 12.303-4.637 16.97.069l44.104 44.461 111.072-110.181c4.705-4.667 12.303-4.637 16.971.068l22.536 22.718c4.667 4.705 4.636 12.303-.069 16.97z"/></svg>&nbsp;2023.12.6</time>
+    
+    
+    
+        
+        
+        
+            
+        
+    
+    
+        
+        <span class="post-meta-item wordcount"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;3965</span>
+    
+    
+        
+        <span class="post-meta-item reading-time"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;8&nbsp;分钟</span>
+    
+    
+    
+</div>
+
+            
+
+            <div class="post-body e-content">
+                <p>专题 云原生 标签 取证和响应</br></p>
+<blockquote>
+<p>首发于<a href="https://mp.weixin.qq.com/s/A8GOxkRXc0Cy0SzzgabLQA" target="_blank" rel="noopener">创新研究院官方博客</a></p>
+</blockquote>
+<p>RSAConference2022将于旧金山时间6月6日召开。大会的Innovation
+Sandbox（沙盒）大赛作为“安全圈的奥斯卡”，每年都备受瞩目，成为全球网络安全行业技术创新和投资的风向标。</p>
+<p>前不久，RSA官方宣布了最终入选创新沙盒的十强初创公司：Araali
+Networks、BastionZero,Inc.、Cado
+Security、Cycode、Dasera、Lightspin、Neosec、Sevco Security、Talon Cyber
+Security和Torq。</p>
+<p>绿盟君将通过背景介绍、产品特点、点评分析等，带大家了解入围的十强厂商。今天，我们要介绍的是厂商是：Cado
+Security。</p>
+<ol>
+<li>公司介绍</li>
+</ol>
+<p>Cado Security
+是一家云原生网络取证和响应平台提供商。该公司于2020年4月成立，目前在英国和美国设有办事处，旨在为安全团队提供更智能、更快速的方式来调查和响应云中的网络安全事件。该公司成立不久便获得150万美元的种子轮融资，2021年又获得1000万美元的A轮融资。</p>
+<p><img src="./images/media/image1.png"
+style="width:5.76806in;height:3.09444in"
+alt="C:\Users\zhangxiaoyong\AppData\Local\Microsoft\Windows\INetCache\Content.MSO\A2981C3C.tmp" /></p>
+<p>图1 Cado Security创始人</p>
+<p>值得关注的是，其创始人团队阵容（如图1所示<sup>[</sup>[1]<sup>]</sup>），首席执行官兼联合创始人James
+Campbell具有丰富的网络事件响应经验和国家情报工作背景，首席技术官兼联合创始人Chris
+Doman是著名的威胁情报平台——ThreatCrowd的构建者，对威胁情报研究的重要性不言而喻。</p>
+<ol>
+<li>背景介绍</li>
+</ol>
+<p>随着全球数字化转型热潮推进，为提高开发敏捷性和速度，企业逐步将其工作和应用转移到云环境中。云化为租户提供了无数好处，包括更大的敏捷性、灵活性和协作性，但它也带来了新的安全挑战。</p>
+<p>正如图2所示<sup>[</sup>[2]<sup>]</sup>，随着云化使用的增加，面向云环境的网络攻击数量也在增加。</p>
+<p>《Palo Alto Networks Cloud Threat Report 1H
+2021》也指出，零售、制造业和政府受到的影响最大，云事件分别增加了
+402%、230% 和 205%<sup>[3]</sup>。</p>
+<p><img src="./images/media/image2.png"
+style="width:5.39196in;height:2.53888in" /></p>
+<p>图2 State of Cloud Security 2021-云数据泄露比例</p>
+<p>尽管新兴市场的兴起使得安全防护工具逐步向云化场景靠近，但始终没有固若金汤的环境，当云中发生网络安全事件时，数字取证和事件响应变得愈发紧急和重要。然而实际在云环境取证时却面临较多问题，如取证环境往往是多云环境，亦或是多节点或临时性的容器等复杂场景，依靠人工组合有限的工具或者手动获取信息数据经常非常复杂且耗时，且由于环境的差异性或者权限的限制导致证据收集往往停留在现象表面。种种原因都可能导致攻击者达成目标后逃逸并且销毁证据。</p>
+<p>在云原生环境中调查需要快速响应、全面跟踪信息和上下文，这使得依靠安全团队进行人工处理变得更加困难，因此云安全市场对能够解决该痛点的安全产品产生了强烈需求。</p>
+<ol>
+<li>功能特点</li>
+</ol>
+<p>Cado Security发布的Cado Response
+是一个无代理的云原生数字取证平台。平台支持通过跨多云环境、临时容器、无服务器环境和本地系统进行事件响应取证调查。通过其自动化数据捕获和处理能力，可以轻松为安全团队提供取证级别的详细信息和前所未有的上下文搜索，以消除云调查的复杂性。正如图3所示<sup>[</sup>[3]<sup>]</sup>，Cado
+Response简洁的组件交互使得其在云上的部署更加便捷。</p>
+<p><img src="./images/media/image3.png"
+style="width:5.76806in;height:2.9875in"
+alt="C:\Users\zhangxiaoyong\Documents\WXWork\1688851816357974\Cache\Image\2022-05\企业微信截图_16526966759717.png" /></p>
+<p>图3 Cado Response关键组件交互</p>
+<p>下面我们来看看Cado Response在哪些方面具有较好的实现：</p>
+<ol>
+<li>环境采集场景丰富</li>
+</ol>
+<p>从官网得知目前Cado
+Response支持从AWS环境（如图4所示<sup>[</sup>[4]<sup>]</sup>，包括
+EC2实例、Kubernetes 服务以及文件系统）、Azure
+环境（包括虚拟机、磁盘）、容器环境、无服务器环境和本地环境进行自动化调查取证。</p>
+<p><img src="./images/media/image4.png"
+style="width:5.4363in;height:2.74629in" /></p>
+<p>图4 AWS环境信息导入</p>
+<p>依赖于其无代理的采集方式，Cado
+Response对信息采集的种类丰富。在云化业务里，能够支持越多的云厂商环境，对产品的成长将会越有利。目前该平台涵盖了国外主流的两大云厂商，也满足其在产品成长期有足够的舞台打磨产品特性的需求。</p>
+<p>关于Cado
+Response无代理采集方式的技术实现，虽然没有在官网找到具体实现细节（如图6图7所示<sup>[</sup>[5]<sup>]</sup>），但根据一些采集依赖（如AWS
+ECS数据采集）的说明不难猜测，其实现的方式和2021年RSAC提名的WIZ（如图5所示<sup>[</sup>[6]<sup>]</sup>）并无二致，可能都是利用云管或者其他组件API进行获取。</p>
+<p><img src="./images/media/image5.png"
+style="width:5.76806in;height:2.7375in" /></p>
+<p>图5 WIZ关于无代理扫描的描述</p>
+<p><img src="./images/media/image6.png"
+style="width:5.76806in;height:2.42778in"
+alt="C:\Users\ZHANGX~1\AppData\Local\Temp\企业微信截图_16527506041105.png" /></p>
+<p>图6 Cado Response采集AWS ESC数据的条件</p>
+<p><img src="./images/media/image7.png"
+style="width:5.76806in;height:1.5875in"
+alt="C:\Users\ZHANGX~1\AppData\Local\Temp\企业微信截图_16527508488062.png" />图7
+AWS关于ECS Exec的支持</p>
+<p>这里有必要澄清的是，Cado
+Response的无代理模式是针对云场景的采集方式，其支持的主机采集仍然采用传统的脚本采集方式，正如图8所示<sup>[</sup>[7]<sup>]</sup>脚本支持从平台生成和直接下载两种方式。</p>
+<p><img src="./images/media/image8.png"
+style="width:5.76806in;height:4.10556in"
+alt="C:\Users\zhangxiaoyong\Documents\WXWork\1688851816357974\Cache\Image\2022-05\企业微信截图_16527502473906.png" /></p>
+<p>图8 主机采集脚本下载</p>
+<ol>
+<li>取证速度快，结果可视化</li>
+</ol>
+<p>依赖于Cado
+Response正在申请专利的自动化工具和架构方法（因此具体方法没有详细的说明），可自动向上和向下扩展以提供快速、并行的数据处理，以及大量的自动化工具集，其取证响应迅速。以AWS的ECS调查取证为例，选定具体的集群和任务后，短短几分钟即可以看到一些可疑活动已被标记并展示出来（如图9所示<sup>[5]</sup>）。</p>
+<p><img src="./images/media/image9.png"
+style="width:5.63961in;height:2.47964in" /></p>
+<p>图9 被标记的可疑活动证据</p>
+<ol>
+<li>支持自动识别和风险标注</li>
+</ol>
+<p>得益于机器学习和威胁情报的基础能力，取证结果支持自动识别威胁活动，并标注告警。当发现可疑的活动后，其告警页面有具体响应的告警活动，如图10所示<sup>[5]</sup>。</p>
+<p><img src="./images/media/image10.png"
+style="width:5.67087in;height:3.06961in" /></p>
+<p>图10 Cado Response的xmrig告警</p>
+<p>相对于面向云原生的XDR检测技术，Cado
+Response更专注于情报数据的内容对比检测（官方现有资料中没有找到除威胁情报检测技术外的其他描述）。考虑到Cado
+Response在安全响应方案工作流程（如图15所示<sup>[10]</sup>）中所处的环节，此处的检测面也足以满足产品本身对威胁活动的求证需求。</p>
+<ol>
+<li>支持多维度搜索云威胁</li>
+</ol>
+<blockquote>
+<p>得益于其丰富的情报数据，使得Cado
+Response支持多维度的搜索以及上下文管理。如图11所示<sup>[</sup>[8]<sup>]</sup>，Cado
+Response支持对日志、磁盘、内存、进程以及历史交互命令等情报数据进行采集，采集的数据安全存储（支持权限控制和备份机制）后，安全团队或分析员只需在UI上直接调查云威胁活动。</p>
+</blockquote>
+<p><img src="./images/media/image11.png"
+style="width:4.58725in;height:2.80117in" /></p>
+<p>图11 数据覆盖描述</p>
+<p>如图12所示<sup>[5]</sup>，针对具体的可疑活动，找到可疑活动的上下文，查看活动前期生成的文件或者后期执行的命令，进而分析文件内容，锁定可疑关键词，方便后续全局搜索，查找其他藏匿点。</p>
+<p><img src="./images/media/image12.png"
+style="width:5.56389in;height:3.40069in"
+alt="C:\Users\zhangxiaoyong\AppData\Local\Microsoft\Windows\INetCache\Content.MSO\CE7F29C0.tmp" /></p>
+<p>图12 xmrig异常活动搜索</p>
+<p>值得一提的是，平台也支持对文件的基本解析，绘制链路关系，标注发现的异常点，从而帮助分析简化取证。但从现有资料来看，目前的解析方法可能只是固定的规则配置，比如图13中文件的特定地址匹配<sup>[5]</sup>，但即使是这个程度的解析也会给分析人员带来巨大的便捷。</p>
+<p><img src="./images/media/image13.png"
+style="width:5.58889in;height:3.34861in"
+alt="C:\Users\zhangxiaoyong\AppData\Local\Microsoft\Windows\INetCache\Content.MSO\670CF5CE.tmp" /></p>
+<p>图13 外链矿池可疑文件解析</p>
+<ol>
+<li>集成解决方案成熟</li>
+</ol>
+<p>从官网材料获悉，Cado Response已有与Splunk
+SOAR和SentinelOne的集成方案。例如通过Cado Response和Splunk
+SOAR的集成，在事件检测之后，Splunk
+SOAR将触发Cado响应平台以在受影响的多云、跨云环境中捕获数据。</p>
+<p>通过和SOAR集成，安全团队可以自定义剧本（如图14所示<sup>[</sup>[9]<sup>]</sup>），以便在检测到恶意活动后立即自动捕获关键事件证据。自定义剧本也为用户定制化需求提供了一种低成本且较为通用的实现方式，能够在扩充产品能力的同时，优化用户体验。</p>
+<p><img src="./images/media/image14.png"
+style="width:5.76806in;height:2.52708in"
+alt="C:\Users\zhangxiaoyong\AppData\Local\Microsoft\Windows\INetCache\Content.MSO\F70DB30C.tmp" /></p>
+<p>图14自定义剧本</p>
+<p>通过与第三方链路安全产品的集成，实现如图15所示的<sup>[</sup>[10]<sup>]</sup>上下游联动，便能够加快事件响应速度、缩短调查和响应时间。利用端到端的自动化策略配置，能确保在事件数据消失之前捕获到事件数据。相信租户在云端的安全需求将会逐步被众多集成解决方案完全覆盖。</p>
+<p><img src="./images/media/image15.png"
+style="width:3.82677in;height:3.39784in" /></p>
+<p>图15 安全响应方案工作流程</p>
+<ol>
+<li>总结</li>
+</ol>
+<p>从首席执行官兼联合创始人James Campbell的履历不难看出，Cado
+Response的产生应该是顺其自然的事情，我们猜测James在多年的网络事件响应和网络取证工作中已经深刻意识到人工搜集大面积情报的痛点和难点，特别是云环境场景下，而其丰富的取证最佳实践方案也最终会落到产品上。再看另一位联合创始人Chris
+Doman，威胁情报研究和实操经验丰富，单从团队阵容来看，也能给以投资人和客户足够的信心。</p>
+<p>从云原生网络取证和响应的赛道来看，正如Cado
+Security官方宣称，目前来看专注于云原生网络取证和响应的产品Cado
+Response具有优势。且随着全球数字化的推进，云安全赛道毋容置疑是一个新的热点，云原生安全场景下的网络取证和响应则是必不可少的一环。早在2017
+年，云安全联盟（CSA，Cloud Security
+Alliance）发布的《云计算关键领域安全指南V4.0》也将云取证重点关注。2019年中科院研究所也结合国内现状对云环境下的电子取证做了分析。随着我国《网络安全法》对网络运营商的责任和义务的强化，云取证在国内也必将成为云平台合理合法运营的重要保障<sup>[</sup>[11]<sup>]</sup>。在这些因素影响下，我们猜测Cado
+Security也将有快速的发展。</p>
+<p>对于Cado Response的总结和预估:
+该平台有强大的情报收集实践指导，加之既有的情报平台（ThreatCrowd）技术沉淀，相信其在情报的收集侧会保持不错的优势。虽然现有的材料没有明显体现出平台对情报的情景化和智能化的处理和预判，因此我们暂时还无法就该平台的智能化场景进行详细分析，但Cado
+Response的官网强调了机器学习在处理和预判中的作用，因此我们相信以后会在Cado
+Response的产品与宣传材料中看到更多关于机器学习的功能与特性。</p>
+<p>参考文献</p>
+<p>[1]  <a href="https://docs.cadosecurity.com/cado-response/getting-started/deploy/aws-deploy" target="_blank" rel="noopener">Cado
+Security</a>.
+Cado Leadership Team.</p>
+<p>[2]  IDC&amp;Ermetic. State of Cloud Security 2021.</p>
+<p>[3]  <a href="https://docs.cadosecurity.com/cado-response/getting-started/deploy/aws-deploy" target="_blank" rel="noopener">Cado
+Security</a>.
+AWS Deployment Overview.</p>
+<p>[4]  Cado Security. Securing and Investigating
+Containerized Applications Running on AWS ECS.</p>
+<p>[5]  <a href="https://docs.cadosecurity.com/cado-response/getting-started/deploy/aws-deploy" target="_blank" rel="noopener">Cado
+Security</a>.
+ECS Import Requirements.</p>
+<p>[6]  WIZ. Agents are not enough: Why cloud security needs
+agentless deep scanning.</p>
+<p>[7]  <a href="https://docs.cadosecurity.com/cado-response/getting-started/deploy/aws-deploy" target="_blank" rel="noopener">Cado
+Security</a>.
+Deploying Cado Host.</p>
+<p>[8]  <a href="https://docs.cadosecurity.com/cado-response/getting-started/deploy/aws-deploy" target="_blank" rel="noopener">Cado
+Security</a>.
+Overview.</p>
+<p>[9]  <a href="https://docs.cadosecurity.com/cado-response/getting-started/deploy/aws-deploy" target="_blank" rel="noopener">Cado
+Security</a>.
+Cado Response &amp; Splunk SOAR Integration.</p>
+<p>[10]  <a href="https://docs.cadosecurity.com/cado-response/getting-started/deploy/aws-deploy" target="_blank" rel="noopener">Cado
+Security</a>.
+The Ultimate Guide to Automating Incident Response.</p>
+<p>[11]  中科院软件研究所. 云环境下的电子数据取证技术研究.</p>
+
+            </div>
+
+            
+    
+    
+        <ul class="post-copyright">
+            <li class="copyright-item author"><span class="copyright-item-text">作者</span>：<a href="https://cloud-Xolt.github.io/" class="p-author h-card" target="_blank" rel="noopener">JOON</a></li>
+            
+                
+                
+                
+                
+                <li class="copyright-item link"><span class="copyright-item-text">链接</span>：<a href="/posts/rsac-cado/" target="_blank" rel="noopener">https://cloud-Xolt.github.io/posts/rsac-cado/</a></li>
+            
+            
+        </ul>
+    
+
+
+
+        </article>
+
+        
+
+        
+    <div class="updated-badge-container">
+        <span title="Updated @ 2023-12-06 17:52:38 CST" style="cursor:help">
+
+<svg xmlns="http://www.w3.org/2000/svg" width="130" height="20" class="updated-badge"><linearGradient id="b" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><clipPath id="a"><rect width="130" height="20" rx="3" fill="#fff"/></clipPath><g clip-path="url(#a)"><path class="updated-badge-left" d="M0 0h55v20H0z"/><path class="updated-badge-right" d="M55 0h75v20H55z"/><path fill="url(#b)" d="M0 0h130v20H0z"/></g><g fill="#fff" text-anchor="middle" font-size="110"><text x="285" y="150" fill="#010101" fill-opacity=".3" textLength="450" transform="scale(.1)">updated</text><text x="285" y="140" textLength="450" transform="scale(.1)">updated</text><text x="915" y="150" fill="#010101" fill-opacity=".3" textLength="650" transform="scale(.1)">2023-12-06</text><text x="915" y="140" textLength="650" transform="scale(.1)">2023-12-06</text></g></svg>
+        </span></div>
+
+
+
+        
+
+
+        
+
+
+        
+    
+    
+
+
+
+        
+    
+
+
+
+        
+
+
+        
+
+
+        
+    
+        
+        
+    
+    
+    
+    
+        <ul class="post-nav">
+            
+            
+                <li class="post-nav-next">
+                    <a href="/posts/k8s-security/" rel="next">Kubernetes集群的攻与防 &gt;</a>
+                </li>
+            
+        </ul>
+    
+
+
+
+        
+
+
+    </div>
+</main>
+
+
+            
+    <div id="back-to-top" class="back-to-top">
+        <a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon arrow-up"><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg></a>
+    </div>
+
+
+            
+
+        </div>
+        
+
+        
+
+
+
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@latest/dist/medium-zoom.min.js"></script>
+
+<script>
+    let imgNodes = document.querySelectorAll('div.post-body img');
+    imgNodes = Array.from(imgNodes).filter(node => node.parentNode.tagName !== "A");
+
+    mediumZoom(imgNodes, {
+        background: 'hsla(var(--color-bg-h), var(--color-bg-s), var(--color-bg-l), 0.95)'
+    })
+</script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/instant.page@5.1.0/instantpage.min.js" type="module" defer></script>
+
+
+
+
+
+
+    </body>
+</html>
