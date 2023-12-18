@@ -2,11 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://cloud-Xolt.github.io/posts/cve/nginx-cve-2023-5044/</loc>
+    <lastmod>2023-12-18T13:13:26+08:00</lastmod>
+  </url><url>
     <loc>https://cloud-Xolt.github.io/</loc>
-    <lastmod>2023-12-07T21:00:41+08:00</lastmod>
+    <lastmod>2023-12-18T13:13:26+08:00</lastmod>
   </url><url>
     <loc>https://cloud-Xolt.github.io/posts/</loc>
-    <lastmod>2023-12-07T21:00:41+08:00</lastmod>
+    <lastmod>2023-12-18T13:13:26+08:00</lastmod>
   </url><url>
     <loc>https://cloud-Xolt.github.io/posts/ebpf-zerotrust/</loc>
     <lastmod>2023-12-07T20:54:34+08:00</lastmod>

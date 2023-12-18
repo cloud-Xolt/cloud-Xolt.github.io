@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">JOON</title>
     <subtitle type="html">人总是善忘的，总有一些事情值得记录，等自己老了，回过头看看自己这一生走过的路。</subtitle>
-    <updated>2023-12-07T21:01:27&#43;08:00</updated>
+    <updated>2023-12-18T13:14:02&#43;08:00</updated>
     <id>https://cloud-Xolt.github.io/</id>
     <link rel="alternate" type="text/html" href="https://cloud-Xolt.github.io/" />
     <link rel="self" type="application/atom&#43;xml" href="https://cloud-Xolt.github.io/atom.xml" />
@@ -16,6 +16,380 @@
             </author>
     
     <generator uri="https://gohugo.io/" version="0.120.0">Hugo</generator>
+        <entry>
+            <title type="text">CVE-2023-5044：NGINX Ingress再曝注入漏洞</title>
+            <link rel="alternate" type="text/html" href="https://cloud-Xolt.github.io/posts/cve/nginx-cve-2023-5044/" />
+            <id>https://cloud-Xolt.github.io/posts/cve/nginx-cve-2023-5044/</id>
+            <updated>2023-12-18T13:13:26&#43;08:00</updated>
+            <published>2023-12-18T13:11:03&#43;08:00</published>
+            <author>
+                    <name>JOON</name>
+                    <uri>https://cloud-Xolt.github.io/</uri>
+                    <email>wo2g9cai@gmail.com</email>
+                    </author>
+            <summary type="html">专题 《云原生安全攻防》 标签 CVE ingress-nginx K8s 云原生安全 API网关 首发于创新研究院官方博客 引言： 随……</summary>
+            
+                <content type="html">&lt;blockquote&gt;
+&lt;p&gt;专题 《云原生安全攻防》 标签 CVE ingress-nginx K8s 云原生安全 API网关&lt;/br&gt;
+首发于&lt;a href=&#34;https://mp.weixin.qq.com/s/ERrR_0Lo5tTG6VWjB16PHA&#34;&gt;创新研究院官方博客&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;引言：&lt;/p&gt;
+&lt;p&gt;随着云原生技术的广泛应用，Kubernetes已成为容器编排平台的事实标准。Ingress
+Controller为Kubernetes（以及其他容器化）环境的专用负载均衡器，Ingress
+Controller抽象了 Kubernetes
+应用程序流量路由的复杂性，并在Kubernetes服务与外部服务之间架起了一座桥梁[1]。&lt;/p&gt;
+&lt;p&gt;作为Kubernetes环境中最受欢迎的Ingress Controller之一，NGINX
+Ingress扮演着重要的角色。然而，接连披露的组件漏洞给使用NGINX
+Ingress的用户带来了严重的安全风险。本文将针对此漏洞进行复现和分析，并带来一些思考。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;漏洞背景&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;就在不久前，Jan-Otto Kröpke (Cloudeteer GmbH)报告了一个NGINX
+Ingress的安全问题，攻击者可通过“nginx.ingress.kubernetes.io/permanent-redirect”注入特定命令，并获取
+NGINX Ingress
+Controller的账号凭据[2]。此问题被认定为高风险安全漏洞，并被命名为CVE-2023-5044。版本号小于1.9.0的NGINX
+Ingress环境均受到安全威胁，需要特殊说明的是，1.2.0版本的“chrooted” NGINX
+Ingress环境虽然可以执行命令，但不能提取凭证，因此不属于高风险。&lt;/p&gt;
+&lt;p&gt;从2021年CVE-2021-25742 漏洞被公开起始，针对NGINX
+Ingress的“公开较量”便持续上演。如图1.1所示，从攻击利用到加黑封禁、再到绕过利用，CVE的演变直接体现了维护者和攻击者之间持续博弈。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image1.png&#34;
+style=&#34;width:5.76806in;height:3.82778in&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;图1.1 NGINX Ingress漏洞&lt;/p&gt;
+&lt;p&gt;多年来，NGINX Ingress备受攻击者的关注，其原因大致有三个：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;NGINX Ingress在市场中热度较高，影响范围广；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;开源项目，为漏洞挖掘和修复绕过提供了良好的条件；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;架构特性为攻击利用活动提供了温床；&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;笔者认为，其业务面和控制面不分离的架构属性，正是诸多漏洞被频频利用的根本原因。与Kong
+Ingress等业务面和控制面分离架构的Controller不同的是，如图1.2红框中所示[3]，Ingress
+Controller(IC)进程和NGINX Web(NGINX)代理进程运行在IC
+Pod中的同一个容器中，故NGINX Web 代理进程具备对 Ingress
+控制器资源的访问权限，而巧合的是，默认情况下NGINX Ingress Controller
+的服务账号在集群中拥有一个较高的权限。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image2.png&#34;
+style=&#34;width:5.76806in;height:3.92639in&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;图1.2 NGINX Ingress业务和控制入口流程&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;漏洞分析与原理解析&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;21-漏洞成因&#34;&gt;2.1 漏洞成因&lt;/h2&gt;
+&lt;p&gt;“&lt;a href=&#34;https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/nginx-configuration/annotations.md#permanent-redirect&#34;&gt;nginx.ingress.kubernetes.io/permanent-redirect&lt;/a&gt;”是Nginx
+Ingress中的一个永久重定向的注释配置项，NGINX
+Ingress官方Github上显示，此注释项值为String类型[4]。&lt;/p&gt;
+&lt;p&gt;该漏洞的根因是Nginx
+Ingress在默认情况下(不含需用户额外配置的校验如“&lt;a href=&#34;https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#annotation-value-word-blocklist&#34;&gt;annotation-value-word-blocklist&lt;/a&gt;”)缺少对“permanent-redirect”进行有效约束而导致的。以1.8.0版本（该版本受到漏洞影响）代码为例，internal/ingress/annotations/redirect/redirect.go核心代码如下：&lt;/p&gt;
+&lt;p&gt;func (r redirect) Parse(ing *networking.Ingress) (interface{}, error) {&lt;/p&gt;
+&lt;p&gt;r3w, _ := parser.GetBoolAnnotation(&amp;quot;from-to-www-redirect&amp;quot;, ing)&lt;/p&gt;
+&lt;p&gt;…&lt;br&gt;
+pr, err := parser.GetStringAnnotation(&amp;quot;permanent-redirect&amp;quot;, ing)&lt;br&gt;
+if err != nil &amp;amp;&amp;amp; !errors.IsMissingAnnotations(err) {&lt;br&gt;
+return nil, err&lt;br&gt;
+}&lt;/p&gt;
+&lt;p&gt;prc, err := parser.GetIntAnnotation(&amp;quot;permanent-redirect-code&amp;quot;, ing)&lt;br&gt;
+if err != nil &amp;amp;&amp;amp; !errors.IsMissingAnnotations(err) {&lt;br&gt;
+return nil, err&lt;br&gt;
+}&lt;/p&gt;
+&lt;p&gt;if prc &amp;lt; http.StatusMultipleChoices || prc &amp;gt;
+http.StatusPermanentRedirect {&lt;br&gt;
+prc = defaultPermanentRedirectCode&lt;br&gt;
+}&lt;/p&gt;
+&lt;p&gt;if pr != &amp;quot;&amp;quot; || r3w {&lt;br&gt;
+return &amp;amp;Config{&lt;br&gt;
+URL: pr,&lt;br&gt;
+Code: prc,&lt;br&gt;
+FromToWWW: r3w,&lt;br&gt;
+}, nil&lt;br&gt;
+}&lt;/p&gt;
+&lt;p&gt;return nil, errors.ErrMissingAnnotations&lt;br&gt;
+}&lt;/p&gt;
+&lt;p&gt;上述代码为永久和临时重定向注释的解析，该代码逻辑并未针对“permanent-redirect”值进行校验，仅将Ingress结构体传给“parser.GetIntAnnotation”提取字符串格式的“permanent-redirect”的值（上述代码标红部分），接下来我们看看internal/ingress/annotations/parser/main.go
+中的parser.GetIntAnnotation方法：&lt;/p&gt;
+&lt;p&gt;// GetStringAnnotation extracts a string from an Ingress annotation&lt;/p&gt;
+&lt;p&gt;func GetStringAnnotation(name string, ing *networking.Ingress) (string,
+error) {&lt;/p&gt;
+&lt;p&gt;v := GetAnnotationWithPrefix(name)&lt;/p&gt;
+&lt;p&gt;err := checkAnnotation(v, ing)&lt;/p&gt;
+&lt;p&gt;if err != nil {&lt;/p&gt;
+&lt;p&gt;return &amp;quot;&amp;quot;, err&lt;/p&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;return ingAnnotations(ing.GetAnnotations()).parseString(v)&lt;/p&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;该函数中“checkAnnotation”对“permanent-redirect”的值做了校验，定位到当前文件的95行，校验代码为：&lt;/p&gt;
+&lt;p&gt;func checkAnnotation(name string, ing *networking.Ingress) error {&lt;/p&gt;
+&lt;p&gt;if ing == nil || len(ing.GetAnnotations()) == 0 {&lt;/p&gt;
+&lt;p&gt;return errors.ErrMissingAnnotations&lt;/p&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;if name == &amp;quot;&amp;quot; {&lt;/p&gt;
+&lt;p&gt;return errors.ErrInvalidAnnotationName&lt;/p&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;return nil&lt;/p&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;函数中仅校验了注释类型非空、注释结构体非空。这便是造成CVE-2023-5044漏洞的成因。&lt;/p&gt;
+&lt;h2 id=&#34;22-利用分析&#34;&gt;2.2 利用分析&lt;/h2&gt;
+&lt;p&gt;接下来笔者以重定向到“https://github.com/cloud-Xolt/CVE”为例，分析Nginx
+Ingress发生的变化。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;定义一个Ingress yaml配置文件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;# test.yaml&lt;/p&gt;
+&lt;p&gt;apiVersion: networking.k8s.io/v1&lt;br&gt;
+kind: Ingress&lt;br&gt;
+metadata:&lt;br&gt;
+name: news-test&lt;br&gt;
+annotations:&lt;br&gt;
+kubernets.io/ingress.class: nginx&lt;br&gt;
+nginx.ingress.kubernetes.io/permanent-redirect:
+&lt;a href=&#34;https://github.com/cloud-Xolt/CVE&#34;&gt;https://github.com/cloud-Xolt/CVE&lt;/a&gt;&lt;br&gt;
+spec:&lt;br&gt;
+ingressClassName: nginx&lt;br&gt;
+rules:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;host: zhangxiaoyong.cn&lt;br&gt;
+http:&lt;br&gt;
+paths:&lt;/li&gt;
+&lt;li&gt;path: /&lt;br&gt;
+pathType: Prefix&lt;br&gt;
+backend:&lt;br&gt;
+service:&lt;br&gt;
+name: service-1&lt;br&gt;
+port:&lt;br&gt;
+number: 80&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;根据配置文件创建资源，验证是否生效&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;如图2.2.1所示，应用文件后，请求对应链接，成功返回301重定向。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image3.png&#34;
+style=&#34;width:5.76806in;height:0.72778in&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;图2.2.1 重定向ingress资源创建&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Nginx配置信息&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;进入对应的ingress-nginx-controller Pod中，在Nginx
+Config文件中，如图2.2.2所示，多了一个“return 301”的配置。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image4.png&#34;
+style=&#34;width:5.76806in;height:1.81042in&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;图2.2.2 Nginx的永久重定向配置&lt;/p&gt;
+&lt;p&gt;Ingress
+yaml中的关键配置是“nginx.ingress.kubernetes.io/permanent-redirect:
+&lt;a href=&#34;https://github.com/cloud-Xolt/CVE&#34;&gt;https://github.com/cloud-Xolt/CVE&lt;/a&gt;”，而Nginx Config文件中体现的是“return
+301
+&lt;a href=&#34;https://github.com/cloud-Xolt/CVE;&#34;&gt;https://github.com/cloud-Xolt/CVE;&lt;/a&gt;”，即使不深入代码逻辑，也能进一步猜想，Nginx
+Config文件中的”https://github.com/cloud-Xolt/CVE”直接被拼接到了“return
+301
+”的后面并且加上“;”，以此为思路，也就不难理解整个注入流程了。至此笔者已经找到注入的思路，接下来需要探寻注入的内容。&lt;/p&gt;
+&lt;p&gt;如图2.2.3所示，进入ingress-nginx-controller的Pod后进行权限和敏感文件发现。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image5.png&#34;
+style=&#34;width:5.76806in;height:2.12917in&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;图2.2.3 ingress-nginx-controller容器权限收集&lt;/p&gt;
+&lt;p&gt;进行简单查看后，笔者决定使用Bash权限和/tmp权限来反弹Shell，从而达到控制容器的效果。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;环境构建&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;31环境信息&#34;&gt;3.1环境信息&lt;/h2&gt;
+&lt;table&gt;
+&lt;colgroup&gt;
+&lt;col style=&#34;width: 23%&#34; /&gt;
+&lt;col style=&#34;width: 39%&#34; /&gt;
+&lt;col style=&#34;width: 36%&#34; /&gt;
+&lt;/colgroup&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td&gt;类型&lt;/td&gt;
+&lt;td&gt;名称&lt;/td&gt;
+&lt;td&gt;版本&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td&gt;操作系统&lt;/td&gt;
+&lt;td&gt;Ubuntu&lt;/td&gt;
+&lt;td&gt;18.04.4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td&gt;集群编排工具&lt;/td&gt;
+&lt;td&gt;Kubernetes&lt;/td&gt;
+&lt;td&gt;1.28.3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td&gt;运行时&lt;/td&gt;
+&lt;td&gt;Contained&lt;/td&gt;
+&lt;td&gt;1.6.21&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td&gt;Ingress Controller&lt;/td&gt;
+&lt;td&gt;NGINX Ingress&lt;/td&gt;
+&lt;td&gt;1.8.0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;32环境搭建&#34;&gt;3.2环境搭建&lt;/h2&gt;
+&lt;p&gt;基础系统和集群编排工具的安装步骤此处不再赘述，部署完成后查询集群信息如图3.2.1所示即可。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image6.png&#34;
+style=&#34;width:5.76806in;height:0.62639in&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;图3.2.1 集群环境信息&lt;/p&gt;
+&lt;p&gt;接下来需要安装NGINX Ingress组件，以下是大致的步骤：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;配置文件修改&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;笔者采用Deployment的方式进行部署，yaml文件参照官方给出的部署指导[5]。需要注意的是这里要替换一下组件的镜像源，笔者替换的信息如图3.2.2所示。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image7.png&#34;
+style=&#34;width:5.76806in;height:0.43194in&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;图3.2.2 NGINX Ingress镜像源处理&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;安装组件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;如图3.2.3所示，在master节点执行命令“kubectl apply -f
+ingress-nginx-1.8.0.yaml”创建组件。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image8.png&#34;
+style=&#34;width:5.76806in;height:1.88958in&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;图3.2.3 创建NGINX Ingress组件&lt;/p&gt;
+&lt;p&gt;如图3.2.4所示，确保组件运行正常，需要说明的是，图中两个ingress-nginx-admission
+Pod
+的READY状态是由于“no_proxy”设置的官方bug。由于不影响本次复现，故没有做进一步的修改[6]。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image9.png&#34;
+style=&#34;width:5.76806in;height:0.44792in&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;图3.2.4 NGINX Ingress部署完成&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;创建测试服务&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;为了方便快捷，笔者直接使用NGINX基础镜像进行构建：&lt;/p&gt;
+&lt;p&gt;# app-nginx.yaml&lt;/p&gt;
+&lt;p&gt;apiVersion: apps/v1&lt;br&gt;
+kind: Deployment&lt;br&gt;
+metadata:&lt;br&gt;
+name: nginx-app&lt;br&gt;
+spec:&lt;br&gt;
+selector:&lt;br&gt;
+matchLabels:&lt;br&gt;
+app: test-app&lt;br&gt;
+replicas: 1&lt;br&gt;
+template:&lt;br&gt;
+metadata:&lt;br&gt;
+labels:&lt;br&gt;
+app: test-app&lt;br&gt;
+spec:&lt;br&gt;
+containers:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;name: nginx&lt;br&gt;
+image: nginx:latest&lt;br&gt;
+ports:&lt;/li&gt;
+&lt;li&gt;containerPort: 80&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;apiVersion: v1&lt;br&gt;
+kind: Service&lt;br&gt;
+metadata:&lt;br&gt;
+name: service-1&lt;br&gt;
+spec:&lt;br&gt;
+selector:&lt;br&gt;
+app: test-app&lt;br&gt;
+ports:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;name: name-of-service-port&lt;br&gt;
+protocol: TCP&lt;br&gt;
+port: 80&lt;br&gt;
+targetPort: 80&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如图3.2.5所示, 笔者使用配置文件成功创建了测试服务。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image10.png&#34;
+style=&#34;width:5.76806in;height:0.75556in&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;图3.2.5 创建测试服务&lt;/p&gt;
+&lt;p&gt;进入刚刚创建的Pod中，如图3.2.6所示，创建一个测试的news页面，作为服务的标识。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image11.png&#34;
+style=&#34;width:5.76806in;height:0.47153in&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;如图3.2.6 创建服务测试页面&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;验证Ingress&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;将上一步创建的测试服务注册到Ingress中，并请求Ingress
+Service所对应的域名，验证当前服务是否注册成功，如图3.2.7所示，整个测试流程是成功的。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image12.png&#34;
+style=&#34;width:5.76806in;height:3.17083in&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;如图3.2.7 测试Ingress&lt;/p&gt;
+&lt;p&gt;至此，准备环境已经完成构建，为了不影响后续的漏洞复现，这里需要将刚刚注册的测试Ingress资源删除。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;漏洞复现&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;41-构建配置&#34;&gt;4.1 构建配置&lt;/h2&gt;
+&lt;p&gt;结合多个更早的CVE的修复逻辑，如图4.1.1.所示的“alias”等静态注入手法已经无法成功，最终笔者决定使用lua语言进行动态注入。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image13.png&#34;
+style=&#34;width:5.76806in;height:1.87917in&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;图4.1.1注入“alias”配置文件&lt;/p&gt;
+&lt;p&gt;如图4.1.2所示，构建一个使用
+“nginx.ingress.kubernetes.io/permanent-redirect”进行注入的配置文件。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image14.png&#34;
+style=&#34;width:5.76806in;height:2.95694in&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;图4.1.2 利用配置文件&lt;/p&gt;
+&lt;h2 id=&#34;42-执行注入&#34;&gt;4.2 执行注入&lt;/h2&gt;
+&lt;p&gt;执行命令“kubectl apply -f
+b-shell.yaml”，创建ingress资源并注入反弹代码，接下来我们查看NGINX
+Controller的配置文件 ，如图4.2.1所示，在Nginx
+Config文件中已经成功实现注入。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image15.png&#34;
+style=&#34;width:5.76806in;height:2.09236in&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;图4.2.1 注入效果&lt;/p&gt;
+&lt;h2 id=&#34;43-触发利用&#34;&gt;4.3 触发利用&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;在攻击端执行端口监听命令：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;nc -lvvp 2333&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;请求对应的连接触发攻击：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;curl &lt;a href=&#34;http://zhangxiaoyong.cn/xshell&#34;&gt;http://zhangxiaoyong.cn/xshell&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;请求对应的链接后，如图4.3.1所示，监听端已经接管了NGINX Controller
+容器的shell。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image16.png&#34;
+style=&#34;width:5.76806in;height:2.64375in&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;图4.3.1 接管NGINX Controller 容器shell成功&lt;/p&gt;
+&lt;p&gt;在获取NGINX Controller
+容器的权限后，可能会导致任意资源被攻击者窃取或篡改，破坏性非常高，限于篇幅此处笔者就不再进行分析了。&lt;/p&gt;
+&lt;h2 id=&#34;44-漏洞修复&#34;&gt;4.4 漏洞修复&lt;/h2&gt;
+&lt;p&gt;该漏洞官方给出的缓解建议是，升级NGINX
+Controller到不低于1.9.0版本，并开启“enable-annotation-validation”。enable-annotation-validation是1.9.0引入的参数配饰，如图4.4.1所示，当参数配置为“true”时将会对Annotation的参数和值进行前置校验，反之则不会。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image17.png&#34;
+style=&#34;width:5.76806in;height:2.33958in&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;图4.4.1 enable-annotation-validation参数校验判断&lt;/p&gt;
+&lt;p&gt;如图4.4.2所示，笔者升级NGINX
+Controller的版本到1.9.4，并开启“enable-annotation-validation”后，执行注入失败。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./images/media/image18.png&#34;
+style=&#34;width:5.76806in;height:0.28403in&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;如图4.4.2 注入失败&lt;/p&gt;
+&lt;p&gt;这里需要注意的是，enable-annotation-validation的官方配置是没有开启验证的[7]。笔者猜测是因为1.9.0后的版本前置了注释校验，并采用了更加严格的白名单机制。如果准入
+Webhook 未完全覆盖正常的注释规则可能会影响业务[8]，所以官方需要在磨合几个版本后再默认开启。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;总结&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;本文通过对CVE-2023-5044的介绍和分析，简单复现了利用步骤，期望通过这种形式让读者朋友对云原生场景下的内生安全有一定的认识，理解云原生安全体系建设的必要性和急迫性，共建更安全的云原生环境。&lt;/p&gt;
+&lt;p&gt;参考文献&lt;/p&gt;
+&lt;p&gt;[1] &lt;a href=&#34;https://www.nginx.com/resources/glossary/kubernetes-ingress-controller/&#34;&gt;https://www.nginx.com/resources/glossary/kubernetes-ingress-controller/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[2] &lt;a href=&#34;https://github.com/kubernetes/ingress-nginx/issues/10572&#34;&gt;https://github.com/kubernetes/ingress-nginx/issues/10572&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[3] &lt;a href=&#34;https://docs.nginx.com/nginx-ingress-controller/overview/design/&#34;&gt;https://docs.nginx.com/nginx-ingress-controller/overview/design/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[4] &lt;a href=&#34;https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/nginx-configuration/annotations.md&#34;&gt;https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/nginx-configuration/annotations.md&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[5] &lt;a href=&#34;https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.0/deploy/static/provider/cloud/deploy.&#34;&gt;https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.0/deploy/static/provider/cloud/deploy.&lt;/a&gt;&lt;a href=&#34;https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.0/deploy/static/provider/cloud/deploy.yaml&#34;&gt;yaml&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[6] &lt;a href=&#34;https://github.com/kubernetes-sigs/kind/issues/1650&#34;&gt;https://github.com/kubernetes-sigs/kind/issues/1650&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[7] &lt;a href=&#34;https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/cli-arguments.md?plain=1#L18&#34;&gt;https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/cli-arguments.md?plain=1#L18&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[8] &lt;a href=&#34;https://github.com/kubernetes/ingress-nginx/issues/10451&#34;&gt;https://github.com/kubernetes/ingress-nginx/issues/10451&lt;/a&gt;&lt;/p&gt;
+</content>
+            
+            
+            
+            
+            
+                
+                    
+                
+                    
+                
+            
+        </entry>
+    
         <entry>
             <title type="text">Tetragon – 盯向内核的眼睛</title>
             <link rel="alternate" type="text/html" href="https://cloud-Xolt.github.io/posts/ebpf-zerotrust/" />
